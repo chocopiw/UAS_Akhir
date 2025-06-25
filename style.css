@@ -710,3 +710,170 @@ body {
         min-height: unset;
     }
 }
+
+/* Kelola Produk Styles */
+
+.produk-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #3b5998;
+    color: #fff;
+    padding: 1.2rem 2rem 1rem 2rem;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    margin-bottom: 0;
+}
+.produk-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+#btnShowTambahProduk {
+    background: #1976d2;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.6rem 1.3rem;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(25, 118, 210, 0.08);
+    transition: background 0.2s;
+}
+#btnShowTambahProduk:hover {
+    background: #1251a3;
+}
+
+.produk-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    padding: 2rem;
+    background: #f4f8fb;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    min-height: 300px;
+}
+.produk-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(35,57,93,0.07);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.2rem 1rem 1.5rem 1rem;
+    transition: box-shadow 0.2s;
+    min-height: 320px;
+}
+.produk-card:hover {
+    box-shadow: 0 4px 20px rgba(25, 118, 210, 0.13);
+}
+.produk-img {
+    width: 100%;
+    max-width: 140px;
+    height: 140px;
+    object-fit: contain;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    background: #f4f8fb;
+}
+.produk-info {
+    width: 100%;
+    text-align: left;
+}
+.produk-nama {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #23395d;
+    margin-bottom: 0.3rem;
+    min-height: 2.2em;
+}
+.produk-harga {
+    font-size: 1rem;
+    color: #1976d2;
+    font-weight: 500;
+    margin-bottom: 0.2rem;
+}
+.produk-stok {
+    font-size: 0.95rem;
+    color: #888;
+}
+
+/* Modal Tambah Produk */
+.modal-produk {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(35,57,93,0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+.modal-content {
+    background: #fff;
+    border-radius: 14px;
+    padding: 2rem 2.5rem 1.5rem 2.5rem;
+    box-shadow: 0 4px 32px rgba(35,57,93,0.13);
+    min-width: 320px;
+    max-width: 95vw;
+    position: relative;
+}
+.close-modal {
+    position: absolute;
+    top: 1rem;
+    right: 1.2rem;
+    font-size: 1.5rem;
+    color: #888;
+    cursor: pointer;
+    font-weight: bold;
+}
+.close-modal:hover {
+    color: #d32f2f;
+}
+#formTambahProduk .form-group {
+    margin-bottom: 1rem;
+}
+#formTambahProduk label {
+    font-weight: 500;
+    color: #23395d;
+    margin-bottom: 0.3rem;
+    display: block;
+}
+#formTambahProduk input, #formTambahProduk select, #formTambahProduk textarea {
+    width: 100%;
+    padding: 0.6rem 0.8rem;
+    border: 1.5px solid #e1e5e9;
+    border-radius: 7px;
+    font-size: 1rem;
+    margin-top: 0.2rem;
+    margin-bottom: 0.2rem;
+    background: #f8fafc;
+    color: #23395d;
+}
+#formTambahProduk button[type="submit"] {
+    background: #43a047;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.7rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 0.7rem;
+    box-shadow: 0 2px 8px rgba(67,160,71,0.08);
+    transition: background 0.2s;
+}
+#formTambahProduk button[type="submit"]:hover {
+    background: #2e7031;
+}
+
+@media (max-width: 700px) {
+    .produk-header, .produk-grid {
+        padding: 1rem 0.5rem;
+    }
+    .modal-content {
+        padding: 1rem 0.5rem;
+    }
+}

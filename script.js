@@ -6,6 +6,7 @@ let currentUser = null;
 document.addEventListener('DOMContentLoaded', function() {
     checkAuthStatus();
     setupEventListeners();
+    setupSidebarNavigation();
 });
 
 // Check authentication status
@@ -246,3 +247,62 @@ function validatePassword(password) {
 // if (localStorage.getItem('users') === null) {
 //     initializeSampleData();
 // } 
+
+function setupSidebarNavigation() {
+    const sidebarLinks = document.querySelectorAll('.sidebar-link');
+    sidebarLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            // Hapus class active dari semua link
+            sidebarLinks.forEach(l => l.classList.remove('active'));
+            this.classList.add('active');
+            // Tentukan halaman yang akan ditampilkan
+            let page = 'dashboard';
+            if (this.textContent.trim().toLowerCase().includes('kelola produk')) {
+                page = 'kelolaProduk';
+            } else if (this.textContent.trim().toLowerCase().includes('dashboard')) {
+                page = 'dashboard';
+            }
+            // Sembunyikan semua .page, tampilkan yang sesuai
+            showPage(page);
+            // Jika kelola produk, muat data produk
+            if (page === 'kelolaProduk') {
+                loadProduk();
+            }
+        });
+    });
+}
+
+// Fungsi untuk memuat produk dari backend dan tampilkan di grid
+async function loadProduk() {
+    const grid = document.getElementById('produkGrid');
+    grid.innerHTML = '<div>Loading...</div>';
+    try {
+        const res = await fetch('api/produk.php');
+        const data = await res.json();
+        if (data.success) {
+            if (data.data.length === 0) {
+                grid.innerHTML = '<div>Tidak ada produk.</div>';
+                return;
+            }
+            grid.innerHTML = '';
+            data.data.forEach(prod => {
+                const card = document.createElement('div');
+                card.className = 'produk-card';
+                card.innerHTML = `
+                    <img src="uploads/${prod.gambar}" alt="${prod.nama}" class="produk-img">
+                    <div class="produk-info">
+                        <div class="produk-nama">${prod.nama}</div>
+                        <div class="produk-harga">Rp ${parseInt(prod.harga).toLocaleString()}</div>
+                        <div class="produk-stok">Stok: ${prod.stok ?? '-'}</div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        } else {
+            grid.innerHTML = '<div>Gagal memuat produk.</div>';
+        }
+    } catch (err) {
+        grid.innerHTML = '<div>Gagal memuat produk.</div>';
+    }
+} 
