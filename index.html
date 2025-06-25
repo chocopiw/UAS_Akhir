@@ -111,38 +111,73 @@
 
         <!-- Dashboard Page -->
         <div id="dashboardPage" class="page" style="display: none;">
-            <div class="dashboard-container">
-                <h2>Dashboard</h2>
-                <div class="welcome-message">
-                    <p>Selamat datang, <span id="userName">User</span>!</p>
-                    <p>Email: <span id="userEmail">user@example.com</span></p>
-                </div>
-                <div class="dashboard-content">
-                    <div class="card">
-                        <h3>Statistik</h3>
-                        <div class="stats">
-                            <div class="stat-item">
-                                <span class="stat-number">150</span>
-                                <span class="stat-label">Total Pengguna</span>
+            <div class="dashboard-layout">
+                <aside class="dashboard-sidebar">
+                    <div class="sidebar-brand"><i class="fas fa-coffee"></i> Toko Kopi</div>
+                    <nav class="sidebar-menu">
+                        <a href="#" class="sidebar-link active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                        <a href="#" class="sidebar-link"><i class="fas fa-box"></i> Kelola Produk</a>
+                        <a href="#" class="sidebar-link"><i class="fas fa-bell"></i> Pelayanan</a>
+                        <a href="#" class="sidebar-link"><i class="fas fa-shopping-cart"></i> Pesanan</a>
+                        <a href="#" class="sidebar-link"><i class="fas fa-ticket-alt"></i> Kupon</a>
+                        <a href="#" class="sidebar-link"><i class="fas fa-chart-line"></i> Penjualan</a>
+                        <a href="#" class="sidebar-link"><i class="fas fa-users"></i> Pelanggan</a>
+                        <a href="#" class="sidebar-link"><i class="fas fa-star"></i> Review</a>
+                        <a href="#" class="sidebar-link"><i class="fas fa-envelope"></i> Kontak</a>
+                        <a href="#" class="sidebar-link"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </nav>
+                </aside>
+                <div class="dashboard-main">
+                    <header class="dashboard-header">
+                        <input type="text" class="dashboard-search" placeholder="Cari...">
+                        <div class="dashboard-user"><i class="fas fa-user-circle"></i> Admin</div>
+                    </header>
+                    <div class="dashboard-content-area">
+                        <h2 class="dashboard-title">Dashboard</h2>
+                        <div class="dashboard-stats-row">
+                            <div class="dashboard-stat-card">
+                                <div class="stat-icon stat-icon-red"><i class="fas fa-box"></i></div>
+                                <div class="stat-info">
+                                    <div class="stat-label">PRODUK</div>
+                                    <div class="stat-value">9</div>
+                                    <div class="stat-desc">Jumlah produk yang tersedia</div>
+                                </div>
                             </div>
-                            <div class="stat-item">
-                                <span class="stat-number">25</span>
-                                <span class="stat-label">Aktivitas Hari Ini</span>
+                            <div class="dashboard-stat-card">
+                                <div class="stat-icon stat-icon-yellow"><i class="fas fa-bell"></i></div>
+                                <div class="stat-info">
+                                    <div class="stat-label">PELAYANAN</div>
+                                    <div class="stat-value">5</div>
+                                    <div class="stat-desc">Pelayanan yang tersedia</div>
+                                </div>
                             </div>
-                            <div class="stat-item">
-                                <span class="stat-number">89%</span>
-                                <span class="stat-label">Tingkat Kepuasan</span>
+                            <div class="dashboard-stat-card">
+                                <div class="stat-icon stat-icon-green"><i class="fas fa-shopping-cart"></i></div>
+                                <div class="stat-info">
+                                    <div class="stat-label">PESANAN</div>
+                                    <div class="stat-value">4</div>
+                                    <div class="stat-desc">Jumlah pesanan diterima</div>
+                                </div>
+                            </div>
+                            <div class="dashboard-stat-card">
+                                <div class="stat-icon stat-icon-blue"><i class="fas fa-money-bill-wave"></i></div>
+                                <div class="stat-info">
+                                    <div class="stat-label">PENDAPATAN</div>
+                                    <div class="stat-value">Rp 127.985,00</div>
+                                    <div class="stat-desc">Total pendapatan</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="card">
-                        <h3>Aktivitas Terbaru</h3>
-                        <ul class="activity-list">
-                            <li>Login berhasil - 2 menit yang lalu</li>
-                            <li>Update profil - 1 jam yang lalu</li>
-                            <li>Upload file - 3 jam yang lalu</li>
-                            <li>Kirim pesan - 1 hari yang lalu</li>
-                        </ul>
+                        <div class="dashboard-graph-row">
+                            <div class="dashboard-graph-card">
+                                <div class="graph-title">Ringkasan Penjualan</div>
+                                <img src="https://dummyimage.com/400x180/dae6f7/8a9bb7&text=Grafik+Penjualan" alt="Grafik Penjualan" style="width:100%;border-radius:12px;">
+                            </div>
+                            <div class="dashboard-graph-card">
+                                <div class="graph-title">Pendapatan</div>
+                                <img src="https://dummyimage.com/400x180/fff3cd/8a9bb7&text=Grafik+Pendapatan" alt="Grafik Pendapatan" style="width:100%;border-radius:12px;">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
