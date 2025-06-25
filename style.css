@@ -6,20 +6,20 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #424242; /* Darker grey background */
+    background: #f5f5f5; /* Ubah ke abu-abu terang */
     min-height: 100vh;
-    color: #f0f0f0; /* Lighter text color for contrast */
+    color: #222;         /* Teks jadi gelap */
 }
 
 /* Navbar */
 .navbar {
-    background: #333333; /* Darker navbar */
+    background: #ffffff; /* Navbar jadi putih */
     backdrop-filter: blur(5px);
     padding: 1rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05); /* Bayangan lebih soft */
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -28,7 +28,7 @@ body {
 .nav-brand {
     font-size: 1.5rem;
     font-weight: bold;
-    color: #e0e0e0; /* Lighter brand color */
+    color: #222 !important; /* Teks navbar jadi gelap */
 }
 
 .nav-menu {
@@ -38,7 +38,7 @@ body {
 
 .nav-link {
     text-decoration: none;
-    color: #e0e0e0;
+    color: #222 !important; /* Teks navbar jadi gelap */
     font-weight: 500;
     transition: color 0.3s ease;
     padding: 0.5rem 1rem;
@@ -46,8 +46,8 @@ body {
 }
 
 .nav-link:hover {
-    color: #ff6347; /* Tomato red for hover */
-    background: rgba(255, 99, 71, 0.1);
+    color: #1976d2; /* Biru untuk hover */
+    background: rgba(25, 118, 210, 0.08);
 }
 
 /* Container */
@@ -67,12 +67,11 @@ body {
     max-width: 500px;
 }
 
-.page#loginPage h1 {
-    color: #f0f0f0; /* Color for the main title */
-    text-align: center;
-    margin-bottom: 2rem;
-    font-size: 2.5rem;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+.page#loginPage h1,
+.page#registerPage h1,
+.dashboard-container h2 {
+    color: #1976d2; /* Biru terang */
+    text-shadow: none;
 }
 
 .page#registerPage {
@@ -259,25 +258,21 @@ body {
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, #ff6347 0%, #e0523a 100%); /* Red gradient for button */
-    color: white;
-    box-shadow: 0 5px 15px rgba(255, 99, 71, 0.4);
+    background: #1976d2;
+    color: #fff;
 }
 
 .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(255, 99, 71, 0.6);
+    background: #1565c0;
 }
 
 .btn-success {
-    background: linear-gradient(135deg, #28a745 0%, #218838 100%); /* Green gradient for success button */
-    color: white;
-    box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+    background: #43a047;
+    color: #fff;
 }
 
 .btn-success:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(40, 167, 69, 0.6);
+    background: #388e3c;
 }
 
 .btn-secondary {
@@ -310,14 +305,14 @@ body {
 
 /* Dashboard */
 .dashboard-container {
-    background: #333333; /* Darker background for dashboard */
+    background: #fff;
     padding: 2.5rem;
     border-radius: 15px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(10px);
     width: 100%;
     max-width: 800px;
-    color: #f0f0f0;
+    color: #222;
 }
 
 .dashboard-container h2 {
@@ -353,12 +348,12 @@ body {
 }
 
 .card {
-    background: #424242; /* Slightly lighter dark grey for cards */
+    background: #f9f9f9;
     padding: 1.5rem;
     border-radius: 10px;
     border: 1px solid #555555; /* Darker border for cards */
-    color: #f0f0f0;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    color: #222;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
 }
 
 .card h3 {
