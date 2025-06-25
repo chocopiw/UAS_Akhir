@@ -115,4 +115,20 @@ function handleRegister($data) {
         echo json_encode(['error' => 'Registrasi gagal']);
     }
 }
+
+function setupEventListeners() {
+    // Login form
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) {
+        console.log('Login form found');
+        loginForm.addEventListener('submit', handleLogin);
+    } else {
+        console.log('Login form NOT found');
+    }
+    // Register form
+    const registerForm = document.getElementById('registerForm');
+    if (registerForm) {
+        registerForm.addEventListener('submit', handleRegister);
+    }
+}
 ?> 

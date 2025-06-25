@@ -17,6 +17,19 @@ document.addEventListener('DOMContentLoaded', function() {
             logout();
         });
     }
+
+    // Navbar Login handler
+    const navbarLogin = document.querySelector('.nav-link[href="#login"]');
+    if (navbarLogin) {
+        navbarLogin.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.hash = '#login';
+            setTimeout(() => {
+                const input = document.getElementById('loginUsername');
+                if (input) input.focus();
+            }, 100);
+        });
+    }
 });
 
 // Check authentication status
@@ -187,8 +200,9 @@ function logout() {
     currentUser = null;
     localStorage.removeItem('currentUser');
     updateNavigation(false);
-    showPage('login');
     showAlert('Logout berhasil!', 'success');
+    // Tampilkan halaman login setelah logout
+    window.location.hash = '#login';
 }
 
 // Show alert function
@@ -356,6 +370,14 @@ function handleHashChange() {
             link.classList.add('active');
         }
     });
+
+    // Auto-focus ke input username jika di halaman login
+    if (hash === 'login') {
+        setTimeout(() => {
+            const input = document.getElementById('loginUsername');
+            if (input) input.focus();
+        }, 100);
+    }
 }
 window.addEventListener('hashchange', handleHashChange);
 window.addEventListener('DOMContentLoaded', handleHashChange); 
