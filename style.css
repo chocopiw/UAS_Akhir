@@ -52,13 +52,15 @@ body {
 
 /* Container untuk halaman login & register saja */
 .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem;
-    min-height: calc(100vh - 80px);
     display: flex;
     align-items: center;
     justify-content: center;
+    min-height: 100vh;
+    width: 100vw;
+    max-width: 100vw;
+    padding: 0;
+    margin: 0;
+    background: none;
 }
 
 /* Override container di dalam dashboard agar lebar penuh dan tidak flex */
@@ -84,7 +86,8 @@ body {
 /* Pages */
 .page {
     width: 100%;
-    max-width: 500px;
+    max-width: 450px;
+    margin: 0 auto;
 }
 
 .page#loginPage h1,
@@ -509,18 +512,21 @@ body {
 .dashboard-layout {
     display: flex;
     min-height: 100vh;
-    background: #eaf1fb;
+    width: 100vw;
+    background: #eaf2fb;
 }
-
 .dashboard-sidebar {
-    width: 220px;
-    background: #23395d;
+    width: 250px;
+    min-width: 220px;
+    background: #22304a;
     color: #fff;
-    display: flex;
-    flex-direction: column;
-    padding: 1.5rem 0;
-    min-height: 100vh;
-    box-shadow: 2px 0 12px rgba(35,57,93,0.07);
+    padding-top: 30px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    height: 100vh;
+    z-index: 10;
 }
 .sidebar-brand {
     font-size: 1.5rem;
@@ -555,10 +561,11 @@ body {
 }
 
 .dashboard-main {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
+    margin-left: 250px;
+    width: calc(100vw - 250px);
     min-height: 100vh;
+    padding: 40px 40px 0 40px;
+    background: #f5f6fa;
 }
 .dashboard-header {
     background: #3b5998;
@@ -685,29 +692,15 @@ body {
         padding: 1.2rem 0.5rem;
     }
 }
-@media (max-width: 700px) {
-    .dashboard-layout {
-        flex-direction: column;
-    }
+@media (max-width: 900px) {
     .dashboard-sidebar {
-        flex-direction: row;
-        width: 100vw;
-        height: auto;
-        min-height: unset;
-        padding: 0.5rem 0;
-        overflow-x: auto;
-    }
-    .sidebar-menu {
-        flex-direction: row;
-        gap: 0.2rem;
-        padding: 0 0.5rem;
-    }
-    .sidebar-link {
-        font-size: 0.9rem;
-        padding: 0.5rem 0.7rem;
+        width: 60px;
+        min-width: 60px;
     }
     .dashboard-main {
-        min-height: unset;
+        margin-left: 60px;
+        width: calc(100vw - 60px);
+        padding: 20px 10px 0 10px;
     }
 }
 
@@ -876,4 +869,11 @@ body {
     .modal-content {
         padding: 1rem 0.5rem;
     }
+}
+
+/* Hanya untuk dashboard/kelola_produk, biarkan flex row (full width) */
+#dashboard, #kelola_produk {
+    width: 100vw;
+    min-height: 100vh;
+    display: block;
 }

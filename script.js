@@ -7,6 +7,16 @@ document.addEventListener('DOMContentLoaded', function() {
     checkAuthStatus();
     setupEventListeners();
     setupSidebarNavigation();
+    handleHashChange();
+
+    // Sidebar Logout handler
+    const sidebarLogout = document.querySelector('.sidebar-link[href="#logout"]');
+    if (sidebarLogout) {
+        sidebarLogout.addEventListener('click', function(e) {
+            e.preventDefault();
+            logout();
+        });
+    }
 });
 
 // Check authentication status
@@ -63,7 +73,7 @@ async function handleLogin(e) {
             currentUser = data.user;
             localStorage.setItem('currentUser', JSON.stringify(data.user));
             updateNavigation(true);
-            showPage('dashboard');
+            window.location.hash = '#dashboard';
             showAlert('Login berhasil!', 'success');
             document.getElementById('loginForm').reset();
         } else {
@@ -305,4 +315,47 @@ async function loadProduk() {
     } catch (err) {
         grid.innerHTML = '<div>Gagal memuat produk.</div>';
     }
-} 
+}
+
+// SPA Hash Navigation
+function handleHashChange() {
+    const hash = window.location.hash.replace('#', '') || 'dashboard';
+    const loggedInUser = localStorage.getItem('currentUser');
+    const isLoggedIn = !!loggedInUser;
+
+    // Sembunyikan semua section utama
+    document.querySelectorAll('.page, #dashboard, #kelola_produk').forEach(el => {
+        if (el) el.style.display = 'none';
+    });
+
+    if (!isLoggedIn) {
+        // Jika belum login, hanya tampilkan login/register
+        if (hash === 'register') {
+            const reg = document.getElementById('registerPage');
+            if (reg) reg.style.display = 'block';
+        } else {
+            const login = document.getElementById('loginPage');
+            if (login) login.style.display = 'block';
+        }
+    } else {
+        // Jika sudah login, tampilkan dashboard/kelola produk sesuai hash
+        if (hash === 'dashboard' || hash === 'kelola_produk') {
+            const section = document.getElementById(hash);
+            if (section) section.style.display = 'block';
+        } else {
+            // Default ke dashboard jika hash tidak dikenal
+            const dashboard = document.getElementById('dashboard');
+            if (dashboard) dashboard.style.display = 'block';
+        }
+    }
+
+    // Efek aktif pada menu sidebar
+    document.querySelectorAll('.sidebar-link').forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + hash) {
+            link.classList.add('active');
+        }
+    });
+}
+window.addEventListener('hashchange', handleHashChange);
+window.addEventListener('DOMContentLoaded', handleHashChange); 
