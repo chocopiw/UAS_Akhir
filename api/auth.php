@@ -44,9 +44,9 @@ function handleLogin($data) {
     }
 
     try {
-        // Kita menggunakan email sebagai username untuk login
-        $stmt = $pdo->prepare("SELECT id, name, email, password FROM users WHERE email = ?");
-        $stmt->execute([$email]);
+        // Ubah: Bisa login dengan email atau username
+        $stmt = $pdo->prepare("SELECT id, name, email, password FROM users WHERE email = ? OR username = ?");
+        $stmt->execute([$email, $email]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
         
         if($user && password_verify($password, $user['password'])) {

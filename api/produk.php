@@ -1,57 +1,161 @@
 <?php
-header('Content-Type: application/json');
 require_once '../config/database.php';
 
-$uploads_dir = __DIR__ . '/../uploads';
-if (!file_exists($uploads_dir)) {
-    mkdir($uploads_dir, 0777, true);
+header('Content-Type: application/json');
+
+// Handle CORS
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
+header('Access-Control-Allow-Headers: Content-Type');
+
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit();
 }
 
+$conn = getConnection();
+
+// GET - Fetch all products or single product
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    // Ambil semua produk
-    $stmt = $pdo->query('SELECT * FROM produk ORDER BY id DESC');
-    $produk = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    echo json_encode(['success' => true, 'data' => $produk]);
-    exit;
+    if (isset($_GET['id'])) {
+        $id = $_GET['id'];
+        $stmt = $conn->prepare("SELECT * FROM products WHERE id = ?");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        echo json_encode($result->fetch_assoc());
+    } else {
+        $result = $conn->query("SELECT * FROM products ORDER BY id DESC");
+        $products = [];
+        while ($row = $result->fetch_assoc()) {
+            $products[] = $row;
+        }
+        echo json_encode($products);
+    }
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nama = $_POST['nama'] ?? '';
-    $harga = $_POST['harga'] ?? '';
-    $deskripsi = $_POST['deskripsi'] ?? '';
-    $kategori = $_POST['kategori'] ?? '';
-    $gambar = '';
+// POST - Create new product
+else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $name = $_POST['name'];
+    $price = $_POST['price'];
+    $stock = $_POST['stock'] ?? 0;
+    $category = $_POST['category'] ?? '';
+    $description = $_POST['description'] ?? '';
+    $image = '';
 
-    // Validasi field
-    if (!$nama || !$harga || !$kategori) {
-        echo json_encode(['success' => false, 'message' => 'Field wajib diisi!']);
-        exit;
+    // Handle image upload
+    if (isset($_FILES['image'])) {
+        $file = $_FILES['image'];
+        $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
+        $filename = 'produk_' . uniqid() . '.' . $ext;
+        $uploadPath = '../uploads/' . $filename;
+
+        if (move_uploaded_file($file['tmp_name'], $uploadPath)) {
+            $image = 'uploads/' . $filename;
+        }
     }
 
-    // Upload gambar
-    if (isset($_FILES['gambar']) && $_FILES['gambar']['error'] === UPLOAD_ERR_OK) {
-        $ext = strtolower(pathinfo($_FILES['gambar']['name'], PATHINFO_EXTENSION));
-        $allowed = ['jpg', 'jpeg', 'png', 'gif'];
-        if (!in_array($ext, $allowed)) {
-            echo json_encode(['success' => false, 'message' => 'Format gambar tidak didukung!']);
-            exit;
-        }
-        $newName = uniqid('produk_', true) . '.' . $ext;
-        $target = $uploads_dir . '/' . $newName;
-        if (!move_uploaded_file($_FILES['gambar']['tmp_name'], $target)) {
-            echo json_encode(['success' => false, 'message' => 'Gagal upload gambar!']);
-            exit;
-        }
-        $gambar = $newName;
+    $stmt = $conn->prepare("INSERT INTO products (name, price, stock, category, description, image) VALUES (?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("sdssss", $name, $price, $stock, $category, $description, $image);
+    
+    if ($stmt->execute()) {
+        echo json_encode(['success' => true, 'id' => $conn->insert_id]);
+    } else {
+        echo json_encode(['success' => false, 'error' => $conn->error]);
     }
-
-    // Simpan ke database
-    $stmt = $pdo->prepare('INSERT INTO produk (nama, harga, deskripsi, gambar, kategori) VALUES (?, ?, ?, ?, ?)');
-    $stmt->execute([$nama, $harga, $deskripsi, $gambar, $kategori]);
-    echo json_encode(['success' => true, 'message' => 'Produk berhasil ditambahkan!']);
-    exit;
 }
 
-// Method tidak didukung
-http_response_code(405);
-echo json_encode(['success' => false, 'message' => 'Method not allowed']); 
+// PUT - Update product
+else if ($_SERVER['REQUEST_METHOD'] === 'PUT' || $_POST['_method'] === 'PUT') {
+    $id = $_POST['id'];
+    $name = $_POST['name'];
+    $price = $_POST['price'];
+    $stock = $_POST['stock'] ?? 0;
+    $category = $_POST['category'] ?? '';
+    $description = $_POST['description'] ?? '';
+    
+    $updateFields = [];
+    $types = "";
+    $values = [];
+
+    // Update basic info
+    $updateFields[] = "name = ?";
+    $updateFields[] = "price = ?";
+    $updateFields[] = "stock = ?";
+    $updateFields[] = "category = ?";
+    $updateFields[] = "description = ?";
+    $types .= "sdsss";
+    $values[] = $name;
+    $values[] = $price;
+    $values[] = $stock;
+    $values[] = $category;
+    $values[] = $description;
+
+    // Handle image upload if new image is provided
+    if (isset($_FILES['image']) && $_FILES['image']['error'] === 0) {
+        $file = $_FILES['image'];
+        $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
+        $filename = 'produk_' . uniqid() . '.' . $ext;
+        $uploadPath = '../uploads/' . $filename;
+
+        if (move_uploaded_file($file['tmp_name'], $uploadPath)) {
+            $updateFields[] = "image = ?";
+            $types .= "s";
+            $values[] = 'uploads/' . $filename;
+
+            // Delete old image
+            $stmt = $conn->prepare("SELECT image FROM products WHERE id = ?");
+            $stmt->bind_param("i", $id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            if ($oldImage = $result->fetch_assoc()) {
+                if (file_exists('../' . $oldImage['image'])) {
+                    unlink('../' . $oldImage['image']);
+                }
+            }
+        }
+    }
+
+    // Add id to values array
+    $types .= "i";
+    $values[] = $id;
+
+    $sql = "UPDATE products SET " . implode(", ", $updateFields) . " WHERE id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param($types, ...$values);
+
+    if ($stmt->execute()) {
+        echo json_encode(['success' => true]);
+    } else {
+        echo json_encode(['success' => false, 'error' => $conn->error]);
+    }
+}
+
+// DELETE - Delete product
+else if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+    $id = $_GET['id'];
+
+    // Get image path before deleting
+    $stmt = $conn->prepare("SELECT image FROM products WHERE id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($product = $result->fetch_assoc()) {
+        // Delete the image file
+        if (!empty($product['image']) && file_exists('../' . $product['image'])) {
+            unlink('../' . $product['image']);
+        }
+    }
+
+    // Delete the product
+    $stmt = $conn->prepare("DELETE FROM products WHERE id = ?");
+    $stmt->bind_param("i", $id);
+    
+    if ($stmt->execute()) {
+        echo json_encode(['success' => true]);
+    } else {
+        echo json_encode(['success' => false, 'error' => $conn->error]);
+    }
+}
+
+$conn->close(); 

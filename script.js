@@ -1,3 +1,11 @@
+// Hardcoded admin user untuk testing
+const ADMIN_USER = {
+    username: 'admin',
+    password: 'admin123',
+    name: 'Administrator',
+    email: 'admin@example.com'
+};
+
 // Global variables
 let currentUser = null;
 // let users = JSON.parse(localStorage.getItem('users')) || []; // Removed as data will be from server
@@ -30,6 +38,46 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 100);
         });
     }
+
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) {
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+            if (username === 'admin' && password === 'admin123') {
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+            } else {
+                alert('Username atau password salah!');
+            }
+        });
+    }
+
+    // Sidebar navigation
+    const kelolaProdukMenu = document.getElementById('kelolaProdukMenu');
+    if (kelolaProdukMenu) {
+        kelolaProdukMenu.addEventListener('click', function(e) {
+            e.preventDefault();
+            showPage('kelolaProdukPage');
+            setActiveSidebar('kelolaProdukMenu');
+        });
+    }
+    const penggunaMenu = document.getElementById('penggunaMenu');
+    if (penggunaMenu) {
+        penggunaMenu.addEventListener('click', function(e) {
+            e.preventDefault();
+            showPage('penggunaPage');
+            setActiveSidebar('penggunaMenu');
+        });
+    }
+    const logoutMenu = document.getElementById('logoutMenu');
+    if (logoutMenu) {
+        logoutMenu.addEventListener('click', function(e) {
+            e.preventDefault();
+            logout();
+        });
+    }
 });
 
 // Check authentication status
@@ -48,53 +96,38 @@ function checkAuthStatus() {
 // Setup event listeners
 function setupEventListeners() {
     // Login form
-    document.getElementById('loginForm').addEventListener('submit', handleLogin);
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) {
+        loginForm.addEventListener('submit', handleLogin);
+    }
     
     // Register form
     document.getElementById('registerForm').addEventListener('submit', handleRegister);
 }
 
 // Handle login
-async function handleLogin(e) {
+function handleLogin(e) {
     e.preventDefault();
     
-    const username = document.getElementById('loginUsername').value; // Changed to username
+    const username = document.getElementById('loginUsername').value;
     const password = document.getElementById('loginPassword').value;
     
-    // Validate input
+    // Simple validation
     if (!username || !password) {
-        showAlert('Mohon isi semua field', 'error');
+        showPopup('Mohon isi username dan password');
         return;
     }
     
-    try {
-        const response = await fetch('api/auth.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                action: 'login',
-                email: username, // Sending username as email for consistency with backend
-                password: password
-            })
-        });
-        
-        const data = await response.json();
-        
-        if(data.success) {
-            currentUser = data.user;
-            localStorage.setItem('currentUser', JSON.stringify(data.user));
-            updateNavigation(true);
-            window.location.hash = '#dashboard';
-            showAlert('Login berhasil!', 'success');
-            document.getElementById('loginForm').reset();
-        } else {
-            showAlert(data.error, 'error');
-        }
-    } catch(error) {
-        showAlert('Terjadi kesalahan pada server', 'error');
-        console.error('Error during login fetch:', error);
+    // Check against hardcoded admin credentials
+    if (username === ADMIN_USER.username && password === ADMIN_USER.password) {
+        currentUser = ADMIN_USER;
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        updateNavigation(true);
+        window.location.hash = '#dashboard';
+        handleHashChange();
+        showPopup('Login berhasil!');
+    } else {
+        showPopup('Username atau password salah!');
     }
 }
 
@@ -141,49 +174,39 @@ async function handleRegister(e) {
         const data = await response.json();
         
         if(data.success) {
-            showAlert('Registrasi berhasil! Silakan login.', 'success');
+            showPopup('Registrasi berhasil! Silakan login.');
             document.getElementById('registerForm').reset();
             showPage('login');
         } else {
-            showAlert(data.error, 'error');
+            showPopup(data.error);
         }
     } catch(error) {
-        showAlert('Terjadi kesalahan pada server', 'error');
+        showPopup('Terjadi kesalahan pada server');
         console.error('Error during registration fetch:', error);
     }
 }
 
 // Show page function
 function showPage(pageName) {
-    // Hide all pages
-    const pages = document.querySelectorAll('.page');
-    pages.forEach(page => {
-        page.style.display = 'none';
-    });
-    
-    // Show selected page
-    const selectedPage = document.getElementById(pageName + 'Page');
-    if (selectedPage) {
-        selectedPage.style.display = 'block';
-        
-        // Update dashboard if showing dashboard
-        if (pageName === 'dashboard' && currentUser) {
-            updateDashboard();
-        }
-    }
+    // Sembunyikan semua page utama
+    const pages = document.querySelectorAll('.main-content > div');
+    pages.forEach(page => page.style.display = 'none');
+    // Tampilkan page yang dipilih
+    const page = document.getElementById(pageName);
+    if (page) page.style.display = 'block';
 }
 
 // Update navigation
 function updateNavigation(isLoggedIn) {
-    const dashboardLink = document.getElementById('dashboardLink');
-    const logoutLink = document.getElementById('logoutLink');
+    const loginLink = document.getElementById('loginLink');
+    const kelolaProdukLink = document.getElementById('kelolaProdukLink');
     
     if (isLoggedIn) {
-        dashboardLink.style.display = 'inline-block';
-        logoutLink.style.display = 'inline-block';
+        loginLink.style.display = 'none';
+        kelolaProdukLink.style.display = 'inline-block';
     } else {
-        dashboardLink.style.display = 'none';
-        logoutLink.style.display = 'none';
+        loginLink.style.display = 'inline-block';
+        kelolaProdukLink.style.display = 'none';
     }
 }
 
@@ -200,9 +223,9 @@ function logout() {
     currentUser = null;
     localStorage.removeItem('currentUser');
     updateNavigation(false);
-    showAlert('Logout berhasil!', 'success');
-    // Tampilkan halaman login setelah logout
     window.location.hash = '#login';
+    handleHashChange();
+    showPopup('Logout berhasil!');
 }
 
 // Show alert function
@@ -334,8 +357,7 @@ async function loadProduk() {
 // SPA Hash Navigation
 function handleHashChange() {
     const hash = window.location.hash.replace('#', '') || 'dashboard';
-    const loggedInUser = localStorage.getItem('currentUser');
-    const isLoggedIn = !!loggedInUser;
+    const isLoggedIn = !!currentUser;
 
     // Sembunyikan semua section utama
     document.querySelectorAll('.page, #dashboard, #kelola_produk').forEach(el => {
@@ -343,21 +365,16 @@ function handleHashChange() {
     });
 
     if (!isLoggedIn) {
-        // Jika belum login, hanya tampilkan login/register
-        if (hash === 'register') {
-            const reg = document.getElementById('registerPage');
-            if (reg) reg.style.display = 'block';
-        } else {
-            const login = document.getElementById('loginPage');
-            if (login) login.style.display = 'block';
-        }
+        // Jika belum login, tampilkan login
+        const login = document.getElementById('loginPage');
+        if (login) login.style.display = 'block';
     } else {
         // Jika sudah login, tampilkan dashboard/kelola produk sesuai hash
         if (hash === 'dashboard' || hash === 'kelola_produk') {
             const section = document.getElementById(hash);
             if (section) section.style.display = 'block';
         } else {
-            // Default ke dashboard jika hash tidak dikenal
+            // Default ke dashboard
             const dashboard = document.getElementById('dashboard');
             if (dashboard) dashboard.style.display = 'block';
         }
@@ -370,14 +387,171 @@ function handleHashChange() {
             link.classList.add('active');
         }
     });
-
-    // Auto-focus ke input username jika di halaman login
-    if (hash === 'login') {
-        setTimeout(() => {
-            const input = document.getElementById('loginUsername');
-            if (input) input.focus();
-        }, 100);
-    }
 }
 window.addEventListener('hashchange', handleHashChange);
-window.addEventListener('DOMContentLoaded', handleHashChange); 
+window.addEventListener('DOMContentLoaded', handleHashChange);
+
+function showPopup(message) {
+    const popup = document.getElementById('popupNotif');
+    const msg = document.getElementById('popupNotifMsg');
+    if (popup && msg) {
+        msg.textContent = message;
+        popup.style.display = 'flex';
+    } else {
+        alert(message);
+    }
+}
+
+function showLogin() {
+    document.getElementById('loginPage').style.display = 'block';
+    document.getElementById('registerPage').style.display = 'none';
+}
+
+function showRegister() {
+    document.getElementById('loginPage').style.display = 'none';
+    document.getElementById('registerPage').style.display = 'block';
+}
+
+// Product Management
+let products = [];
+const modal = document.getElementById('productModal');
+const modalTitle = document.getElementById('modalTitle');
+const productForm = document.getElementById('productForm');
+const closeBtn = document.querySelector('.close');
+let editingProductId = null;
+
+// Close modal when clicking the close button or outside the modal
+if (closeBtn) {
+    closeBtn.onclick = function() {
+        modal.style.display = "none";
+    }
+}
+
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+
+// Show add product form
+function showAddProductForm() {
+    modalTitle.textContent = 'Tambah Produk';
+    productForm.reset();
+    editingProductId = null;
+    modal.style.display = "block";
+}
+
+// Load products
+function loadProducts() {
+    fetch('api/produk.php')
+        .then(response => response.json())
+        .then(data => {
+            products = data;
+            displayProducts();
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+// Display products in grid
+function displayProducts() {
+    const grid = document.getElementById('productsGrid');
+    if (!grid) return;
+
+    grid.innerHTML = '';
+    products.forEach(product => {
+        const card = document.createElement('div');
+        card.className = 'product-card';
+        card.innerHTML = `
+            <img src="${product.image}" alt="${product.name}" class="product-image">
+            <div class="product-info">
+                <h3 class="product-name">${product.name}</h3>
+                <div class="product-price">Rp ${formatPrice(product.price)}</div>
+            </div>
+            <div class="product-actions">
+                <button class="action-btn edit-btn" onclick="editProduct(${product.id})">
+                    <i class="fas fa-edit"></i> Edit
+                </button>
+                <button class="action-btn delete-btn" onclick="deleteProduct(${product.id})">
+                    <i class="fas fa-trash"></i> Hapus
+                </button>
+            </div>
+        `;
+        grid.appendChild(card);
+    });
+}
+
+// Format price with thousand separator
+function formatPrice(price) {
+    return new Intl.NumberFormat('id-ID').format(price);
+}
+
+// Edit product
+function editProduct(id) {
+    const product = products.find(p => p.id === id);
+    if (!product) return;
+
+    modalTitle.textContent = 'Edit Produk';
+    document.getElementById('productName').value = product.name;
+    document.getElementById('productPrice').value = product.price;
+    editingProductId = id;
+    modal.style.display = "block";
+}
+
+// Delete product
+function deleteProduct(id) {
+    if (confirm('Apakah Anda yakin ingin menghapus produk ini?')) {
+        fetch(`api/produk.php?id=${id}`, {
+            method: 'DELETE'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                loadProducts();
+            } else {
+                alert('Gagal menghapus produk');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+}
+
+// Handle form submission
+if (productForm) {
+    productForm.onsubmit = function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(productForm);
+        const method = editingProductId ? 'PUT' : 'POST';
+        if (editingProductId) {
+            formData.append('id', editingProductId);
+        }
+
+        fetch('api/produk.php', {
+            method: method,
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                modal.style.display = "none";
+                loadProducts();
+                productForm.reset();
+            } else {
+                alert('Gagal menyimpan produk');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    };
+}
+
+// Load products when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    loadProducts();
+});
+
+function setActiveSidebar(menuId) {
+    const sidebarLinks = document.querySelectorAll('.sidebar a');
+    sidebarLinks.forEach(link => link.classList.remove('active'));
+    const activeLink = document.getElementById(menuId);
+    if (activeLink) activeLink.classList.add('active');
+} 

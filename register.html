@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <form id="registerForm">
+        <input type="text" id="registerUsername" placeholder="Username" required>
+        <input type="text" id="registerFullName" placeholder="Nama Lengkap" required>
+        <input type="tel" id="registerPhone" placeholder="No. HP" required>
+        <input type="email" id="registerEmail" placeholder="Email" required>
+        <input type="password" id="registerPassword" placeholder="Password" required>
+        <textarea id="registerAddress" placeholder="Alamat" required></textarea>
+        <button type="submit">DAFTAR</button>
+    </form>
+    <div id="alert"></div>
+    <script>
+    document.getElementById('registerForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const data = {
+            action: 'register',
+            username: document.getElementById('registerUsername').value,
+            fullname: document.getElementById('registerFullName').value,
+            phone: document.getElementById('registerPhone').value,
+            email: document.getElementById('registerEmail').value,
+            password: document.getElementById('registerPassword').value,
+            address: document.getElementById('registerAddress').value
+        };
+        const alertDiv = document.getElementById('alert');
+        alertDiv.innerHTML = '';
+        try {
+            const response = await fetch('api/auth.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            const res = await response.json();
+            if (res.success) {
+                alertDiv.innerHTML = '<div style="color:green;">Registrasi berhasil! Silakan login.</div>';
+                setTimeout(() => window.location.href = 'login.html', 1500);
+            } else {
+                alertDiv.innerHTML = `<div style='color:red;'>${res.error || 'Registrasi gagal'}</div>`;
+            }
+        } catch (err) {
+            alertDiv.innerHTML = '<div style="color:red;">Terjadi kesalahan pada server</div>';
+        }
+    });
+    </script>
+</body>
+</html> 

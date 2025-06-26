@@ -11,8 +11,7 @@
     <nav class="navbar">
         <div class="nav-brand">MyApp</div>
         <div class="nav-menu" id="navMenu">
-            <a href="#login" class="nav-link">Login</a>
-            <a href="#register" class="nav-link">Register</a>
+            <a href="#login" class="nav-link" id="loginLink">Login</a>
             <a href="#kelola_produk" class="nav-link" id="kelolaProdukLink" style="display: none;">Kelola Produk</a>
         </div>
     </nav>
@@ -20,90 +19,50 @@
     <main class="container">
         <!-- Login Page -->
         <div id="loginPage" class="page">
-            <h1>Login ke Toko Alat Kopi</h1>
             <div class="form-container">
-                <h2>Login Akun</h2>
+                <h2>Login Admin</h2>
                 <form id="loginForm" class="form">
                     <div class="form-group">
-                        <label for="loginUsername">USERNAME</label>
                         <div class="input-wrapper">
                             <i class="fas fa-user"></i>
                             <input type="text" id="loginUsername" placeholder="Username" required>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="loginPassword">PASSWORD</label>
                         <div class="input-wrapper">
                             <i class="fas fa-lock"></i>
                             <input type="password" id="loginPassword" placeholder="Password" required>
                         </div>
                     </div>
-                    <div class="form-options">
-                        <a href="#" class="forgot-password">Lupa password?</a>
-                        <div class="remember-me">
-                            <input type="checkbox" id="rememberMe">
-                            <label for="rememberMe">Ingat saya</label>
-                        </div>
-                    </div>
                     <button type="submit" class="btn btn-primary">LOGIN</button>
                 </form>
                 <p class="form-footer">
-                    Belum punya akun? <a href="#register">Register</a>
+                    Belum punya akun? <a href="#" onclick="showRegister()">Register</a>
                 </p>
             </div>
         </div>
 
         <!-- Register Page -->
-        <div id="registerPage" class="page" style="display: none;">
-            <h1>BUAT AKUN TOKO ALAT KOPI</h1>
+        <div id="registerPage" class="page" style="display:none;">
             <div class="form-container">
-                <form id="registerForm" class="form register-form-grid">
+                <h2>Register Admin</h2>
+                <form id="registerForm" class="form">
                     <div class="form-group">
-                        <label for="registerUsername">Username</label>
                         <div class="input-wrapper">
                             <i class="fas fa-user"></i>
                             <input type="text" id="registerUsername" placeholder="Username" required>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="registerPassword">Password</label>
                         <div class="input-wrapper">
                             <i class="fas fa-lock"></i>
                             <input type="password" id="registerPassword" placeholder="Password" required>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="registerFullName">Nama lengkap</label>
-                        <div class="input-wrapper">
-                            <i class="fas fa-id-card"></i>
-                            <input type="text" id="registerFullName" placeholder="Nama lengkap" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="registerPhone">No. HP</label>
-                        <div class="input-wrapper">
-                            <i class="fas fa-phone"></i>
-                            <input type="tel" id="registerPhone" placeholder="No. HP" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="registerEmail">Email</label>
-                        <div class="input-wrapper">
-                            <i class="fas fa-envelope"></i>
-                            <input type="email" id="registerEmail" placeholder="Email" required>
-                        </div>
-                    </div>
-                    <div class="form-group full-width-field">
-                        <label for="registerAddress">Alamat</label>
-                        <div class="input-wrapper">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <textarea id="registerAddress" placeholder="Alamat" rows="3" required></textarea>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-success">Daftar</button>
+                    <button type="submit" class="btn btn-success">DAFTAR</button>
                 </form>
                 <p class="form-footer">
-                    Sudah punya akun? <a href="#login">Login</a>
+                    Sudah punya akun? <a href="#" onclick="showLogin()">Login</a>
                 </p>
             </div>
         </div>
@@ -114,7 +73,7 @@
                 <aside class="dashboard-sidebar">
                     <div class="sidebar-brand"><i class="fas fa-coffee"></i> Toko Kopi</div>
                     <nav class="sidebar-menu">
-                        <a href="#dashboard" class="sidebar-link" id="sidebarDashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                        <a href="#dashboard" class="sidebar-link active" id="sidebarDashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
                         <a href="#kelola_produk" class="sidebar-link" id="sidebarKelolaProduk"><i class="fas fa-box"></i> Kelola Produk</a>
                         <a href="#pelayanan" class="sidebar-link"><i class="fas fa-bell"></i> Pelayanan</a>
                         <a href="#pesanan" class="sidebar-link"><i class="fas fa-shopping-cart"></i> Pesanan</a>
@@ -197,7 +156,6 @@
                         <a href="#pelanggan" class="sidebar-link"><i class="fas fa-users"></i> Pelanggan</a>
                         <a href="#review" class="sidebar-link"><i class="fas fa-star"></i> Review</a>
                         <a href="#kontak" class="sidebar-link"><i class="fas fa-envelope"></i> Kontak</a>
-                        <a href="#logout" class="sidebar-link" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
                     </nav>
                 </aside>
                 <div class="dashboard-main">
@@ -249,6 +207,13 @@
         </div>
     </main>
 
+    <div id="popupNotif" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.4);z-index:9999;align-items:center;justify-content:center;">
+        <div style="background:#fff;padding:2rem 2.5rem;border-radius:16px;box-shadow:0 4px 24px rgba(35,57,93,0.18);min-width:300px;max-width:90vw;text-align:center;">
+            <div id="popupNotifMsg" style="margin-bottom:1.5rem;font-size:1.1rem;"></div>
+            <button onclick="document.getElementById('popupNotif').style.display='none'" style="padding:0.5rem 1.5rem;border:none;background:#7a4956;color:#fff;border-radius:8px;font-size:1rem;cursor:pointer;">OK</button>
+        </div>
+    </div>
+
     <script src="script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
@@ -283,7 +248,7 @@
                         data: [10000, 15000, 12000, 17000, 14000, 127985, 13000, 16000, 18000, 20000, 21000, 22000],
                         fill: true,
                         backgroundColor: 'rgba(255, 235, 59, 0.2)',
-                        borderColor: '#ffd54f',
+                        borderColor: '#fdd835',
                         tension: 0.4
                     }]
                 },
