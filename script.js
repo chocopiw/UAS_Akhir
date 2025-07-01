@@ -454,7 +454,7 @@ function deleteProduct(id) {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                // loadProducts();
+                loadProducts();
             } else {
                 alert('Gagal menghapus produk');
             }
@@ -512,11 +512,20 @@ function loadProducts() {
                     const card = document.createElement('div');
                     card.className = 'produk-card';
                     card.innerHTML = `
-                        <img src="${produk.image ? produk.image : 'https://via.placeholder.com/80'}" alt="${produk.name}">
+                        <img src="${produk.image ? produk.image : 'https://via.placeholder.com/80'}" alt="${produk.name}" class="produk-img">
                         <div class="produk-nama">${produk.name}</div>
                         <div class="produk-harga">Rp ${Number(produk.price).toLocaleString('id-ID')}</div>
+                        <button class="btn btn-danger btn-hapus-produk" data-id="${produk.id}" style="margin-top:10px;">Hapus</button>
                     `;
                     produkGrid.appendChild(card);
+                });
+                // Tambahkan event listener untuk tombol hapus
+                const hapusButtons = document.querySelectorAll('.btn-hapus-produk');
+                hapusButtons.forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const id = this.getAttribute('data-id');
+                        deleteProduct(id);
+                    });
                 });
             } else {
                 produkGrid.innerHTML = '<div>Tidak ada produk.</div>';
