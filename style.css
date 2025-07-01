@@ -717,12 +717,14 @@ body {
 }
 .produk-img {
     width: 100%;
-    max-width: 60px;
-    height: 60px;
+    max-width: 100px;
+    height: 100px;
     object-fit: contain;
     border-radius: 8px;
     margin-bottom: 1rem;
-    background: #f4f8fb;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(35,57,93,0.10);
+    display: block;
 }
 .produk-info {
     width: 100%;
@@ -1307,3 +1309,29 @@ body, .main-content {
     margin-bottom: 0.2rem;
     text-align: center;
 }
+
+/* Dashboard User Styles */
+.user-dashboard-layout { display: flex; min-height: 100vh; }
+.user-sidebar {
+    width: 220px; background: #222d32; color: #fff; min-height: 100vh; padding: 0; display: flex; flex-direction: column;
+}
+.user-sidebar .sidebar-brand { font-size: 1.3rem; font-weight: bold; padding: 1.5rem 1rem; border-bottom: 1px solid #333; }
+.user-sidebar .sidebar-menu { flex: 1; display: flex; flex-direction: column; }
+.user-sidebar .sidebar-link {
+    color: #fff; text-decoration: none; padding: 1rem 1.5rem; display: flex; align-items: center; transition: background 0.2s;
+}
+.user-sidebar .sidebar-link.active, .user-sidebar .sidebar-link:hover { background: #1a2226; }
+.user-main { flex: 1; padding: 2.5rem 2rem; }
+.user-dashboard-title { font-size: 2rem; font-weight: bold; margin-bottom: 2rem; color: #23395d; }
+.user-stats-row { display: flex; gap: 2rem; flex-wrap: wrap; }
+.user-stat-card {
+    flex: 1 1 220px; min-width: 200px; background: #fff; border-radius: 12px; box-shadow: 0 2px 12px rgba(35,57,93,0.07);
+    display: flex; flex-direction: column; align-items: flex-start; padding: 1.5rem 2rem; margin-bottom: 1.5rem;
+}
+.user-stat-card.blue { background: #29b6f6; color: #fff; }
+.user-stat-card.yellow { background: #ffd54f; color: #333; }
+.user-stat-card.green { background: #66bb6a; color: #fff; }
+.user-stat-card.gray { background: #90a4ae; color: #fff; }
+.user-stat-label { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; }
+.user-stat-value { font-size: 2.2rem; font-weight: bold; }
+@media (max-width: 900px) { .user-stats-row { flex-direction: column; gap: 1.2rem; } .user-main { padding: 1.2rem 0.5rem; } }

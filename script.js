@@ -561,4 +561,30 @@ if (formTambahProduk) {
         })
         .catch(error => alert('Gagal menyimpan produk'));
     };
-} 
+}
+
+function showPageByHash() {
+    const hash = window.location.hash.replace('#', '');
+    // Sembunyikan semua page
+    document.querySelectorAll('.page').forEach(page => page.style.display = 'none');
+    if (hash === 'dashboard') {
+        // Tampilkan dashboard user
+        const userDashboard = document.getElementById('userDashboard');
+        if (userDashboard) userDashboard.style.display = 'block';
+    } else if (hash === 'kelola_produk') {
+        const kelolaProduk = document.getElementById('kelola_produk');
+        if (kelolaProduk) kelolaProduk.style.display = 'block';
+    } else if (hash === 'login' || hash === '') {
+        const loginPage = document.getElementById('loginPage');
+        if (loginPage) loginPage.style.display = 'block';
+    } else if (hash === 'register') {
+        const registerPage = document.getElementById('registerPage');
+        if (registerPage) registerPage.style.display = 'block';
+    } else {
+        // Default ke login
+        const loginPage = document.getElementById('loginPage');
+        if (loginPage) loginPage.style.display = 'block';
+    }
+}
+window.addEventListener('hashchange', showPageByHash);
+window.addEventListener('DOMContentLoaded', showPageByHash); 
