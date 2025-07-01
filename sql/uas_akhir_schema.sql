@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS users (
     address TEXT
 );
 
--- Create products table
+-- Membuat tabel products
 CREATE TABLE IF NOT EXISTS products (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,

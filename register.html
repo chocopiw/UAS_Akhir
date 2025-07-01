@@ -2,51 +2,50 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Register</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Admin</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <form id="registerForm">
-        <input type="text" id="registerUsername" placeholder="Username" required>
-        <input type="text" id="registerFullName" placeholder="Nama Lengkap" required>
-        <input type="tel" id="registerPhone" placeholder="No. HP" required>
-        <input type="email" id="registerEmail" placeholder="Email" required>
-        <input type="password" id="registerPassword" placeholder="Password" required>
-        <textarea id="registerAddress" placeholder="Alamat" required></textarea>
-        <button type="submit">DAFTAR</button>
-    </form>
-    <div id="alert"></div>
-    <script>
-    document.getElementById('registerForm').addEventListener('submit', async function(e) {
-        e.preventDefault();
-        const data = {
-            action: 'register',
-            username: document.getElementById('registerUsername').value,
-            fullname: document.getElementById('registerFullName').value,
-            phone: document.getElementById('registerPhone').value,
-            email: document.getElementById('registerEmail').value,
-            password: document.getElementById('registerPassword').value,
-            address: document.getElementById('registerAddress').value
-        };
-        const alertDiv = document.getElementById('alert');
-        alertDiv.innerHTML = '';
-        try {
-            const response = await fetch('api/auth.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            });
-            const res = await response.json();
-            if (res.success) {
-                alertDiv.innerHTML = '<div style="color:green;">Registrasi berhasil! Silakan login.</div>';
-                setTimeout(() => window.location.href = 'login.html', 1500);
-            } else {
-                alertDiv.innerHTML = `<div style='color:red;'>${res.error || 'Registrasi gagal'}</div>`;
-            }
-        } catch (err) {
-            alertDiv.innerHTML = '<div style="color:red;">Terjadi kesalahan pada server</div>';
-        }
-    });
-    </script>
+    <nav class="navbar">
+        <div class="nav-brand">MyApp</div>
+        <div class="nav-menu" id="navMenu">
+            <a href="login.html" class="nav-link" id="loginLink">Login</a>
+            <a href="kelola_produk.html" class="nav-link" id="kelolaProdukLink" style="display: none;">Kelola Produk</a>
+        </div>
+    </nav>
+    <main class="container">
+        <div id="registerPage" class="page">
+            <div class="form-container">
+                <h2>Register Admin</h2>
+                <form id="registerForm" class="form">
+                    <div class="form-group">
+                        <div class="input-wrapper">
+                            <i class="fas fa-user"></i>
+                            <input type="text" id="registerUsername" placeholder="Username" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-wrapper">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="registerPassword" placeholder="Password" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-success">DAFTAR</button>
+                </form>
+                <p class="form-footer">
+                    Sudah punya akun? <a href="login.html">Login</a>
+                </p>
+            </div>
+        </div>
+    </main>
+    <div id="popupNotif" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.4);z-index:9999;align-items:center;justify-content:center;">
+        <div style="background:#fff;padding:2rem 2.5rem;border-radius:16px;box-shadow:0 4px 24px rgba(35,57,93,0.18);min-width:300px;max-width:90vw;text-align:center;">
+            <div id="popupNotifMsg" style="margin-bottom:1.5rem;font-size:1.1rem;"></div>
+            <button onclick="document.getElementById('popupNotif').style.display='none'" style="padding:0.5rem 1.5rem;border:none;background:#7a4956;color:#fff;border-radius:8px;font-size:1rem;cursor:pointer;">OK</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
 </body>
 </html> 

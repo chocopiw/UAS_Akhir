@@ -1,4 +1,8 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 require_once '../config/database.php';
 
 header('Content-Type: application/json');
@@ -56,6 +60,10 @@ else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     $stmt = $conn->prepare("INSERT INTO products (name, price, stock, category, description, image) VALUES (?, ?, ?, ?, ?, ?)");
+    if (!$stmt) {
+        echo json_encode(['success' => false, 'error' => $conn->error]);
+        exit;
+    }
     $stmt->bind_param("sdssss", $name, $price, $stock, $category, $description, $image);
     
     if ($stmt->execute()) {

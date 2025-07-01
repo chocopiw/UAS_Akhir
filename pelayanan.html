@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelola Pelayanan</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">MyApp</div>
+        <div class="nav-menu" id="navMenu">
+            <a href="login.html" class="nav-link" id="loginLink">Login</a>
+            <a href="kelola_produk.html" class="nav-link" id="kelolaProdukLink">Kelola Produk</a>
+        </div>
+    </nav>
+    <main class="container">
+        <div id="pelayanan">
+            <div class="dashboard-layout">
+                <aside class="dashboard-sidebar">
+                    <div class="sidebar-brand"><i class="fas fa-coffee"></i> Toko Kopi</div>
+                    <nav class="sidebar-menu">
+                        <a href="dashboard.html" class="sidebar-link" id="sidebarDashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                        <a href="kelola_produk.html" class="sidebar-link" id="sidebarKelolaProduk"><i class="fas fa-box"></i> Kelola Produk</a>
+                        <a href="pelayanan.html" class="sidebar-link active" id="sidebarPelayanan"><i class="fas fa-bell"></i> Pelayanan</a>
+                        <a href="#pesanan" class="sidebar-link"><i class="fas fa-shopping-cart"></i> Pesanan</a>
+                        <a href="#kupon" class="sidebar-link"><i class="fas fa-ticket-alt"></i> Kupon</a>
+                        <a href="#penjualan" class="sidebar-link"><i class="fas fa-chart-line"></i> Penjualan</a>
+                        <a href="#pelanggan" class="sidebar-link"><i class="fas fa-users"></i> Pelanggan</a>
+                        <a href="#review" class="sidebar-link"><i class="fas fa-star"></i> Review</a>
+                        <a href="#kontak" class="sidebar-link"><i class="fas fa-envelope"></i> Kontak</a>
+                    </nav>
+                </aside>
+                <div class="dashboard-main">
+                    <div class="produk-header">
+                        <h2>Kelola Pelayanan</h2>
+                        <button class="btn btn-primary" id="btnShowTambahPelayanan"><i class="fas fa-plus"></i> Tambah</button>
+                    </div>
+                    <div class="pelayanan-grid" id="pelayananGrid">
+                        <!-- Data pelayanan akan ditampilkan di sini -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <div id="popupNotif" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.4);z-index:9999;align-items:center;justify-content:center;">
+        <div style="background:#fff;padding:2rem 2.5rem;border-radius:16px;box-shadow:0 4px 24px rgba(35,57,93,0.18);min-width:300px;max-width:90vw;text-align:center;">
+            <div id="popupNotifMsg" style="margin-bottom:1.5rem;font-size:1.1rem;"></div>
+            <button onclick="document.getElementById('popupNotif').style.display='none'" style="padding:0.5rem 1.5rem;border:none;background:#7a4956;color:#fff;border-radius:8px;font-size:1rem;cursor:pointer;">OK</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html> 

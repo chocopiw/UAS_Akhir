@@ -2,93 +2,142 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <div class="dashboard-layout">
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <div class="logo"><i class="fas fa-coffee"></i> Toko Kopi</div>
-            <nav>
-                <ul>
-                    <li><a href="#" id="dashboardMenu"><i class="fas fa-home"></i> Dashboard</a></li>
-                    <li><a href="#" id="kategoriMenu"><i class="fas fa-list"></i> Kategori Produk</a></li>
-                    <li><a href="#" id="kelolaProdukMenu" class="active"><i class="fas fa-box"></i> Produk</a></li>
-                    <li><a href="#" id="pesananMenu"><i class="fas fa-shopping-cart"></i> Pesanan</a></li>
-                    <li><a href="#" id="kuponMenu"><i class="fas fa-ticket-alt"></i> Kupon</a></li>
-                    <li><a href="#" id="pembayaranMenu"><i class="fas fa-credit-card"></i> Pembayaran</a></li>
-                    <li><a href="#" id="pelangganMenu"><i class="fas fa-users"></i> Pelanggan</a></li>
-                    <li><a href="#" id="reviewMenu"><i class="fas fa-star"></i> Review</a></li>
-                    <li><a href="#" id="kontakMenu"><i class="fas fa-envelope"></i> Kontak</a></li>
-                    <li><a href="#" id="logoutMenu"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-                </ul>
-            </nav>
+    <nav class="navbar">
+        <div class="nav-brand">MyApp</div>
+        <div class="nav-menu" id="navMenu">
+            <a href="login.html" class="nav-link" id="loginLink">Login</a>
+            <a href="kelola_produk.html" class="nav-link" id="kelolaProdukLink">Kelola Produk</a>
         </div>
-        <!-- Main Content -->
-        <div class="main-content">
-            <div class="main-header">
-                <div class="search-bar">
-                    <input type="text" placeholder="Cari...">
-                </div>
-                <div class="admin-info">
-                    <i class="fas fa-user-circle"></i> Admin
+    </nav>
+    <main class="container">
+        <div id="dashboard">
+            <div class="dashboard-layout">
+                <aside class="dashboard-sidebar">
+                    <div class="sidebar-brand"><i class="fas fa-coffee"></i> Toko Kopi</div>
+                    <nav class="sidebar-menu">
+                        <a href="dashboard.html" class="sidebar-link active" id="sidebarDashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                        <a href="kelola_produk.html" class="sidebar-link" id="sidebarKelolaProduk"><i class="fas fa-box"></i> Kelola Produk</a>
+                        <a href="#pelayanan" class="sidebar-link"><i class="fas fa-bell"></i> Pelayanan</a>
+                        <a href="#pesanan" class="sidebar-link"><i class="fas fa-shopping-cart"></i> Pesanan</a>
+                        <a href="#kupon" class="sidebar-link"><i class="fas fa-ticket-alt"></i> Kupon</a>
+                        <a href="#penjualan" class="sidebar-link"><i class="fas fa-chart-line"></i> Penjualan</a>
+                        <a href="#pelanggan" class="sidebar-link"><i class="fas fa-users"></i> Pelanggan</a>
+                        <a href="#review" class="sidebar-link"><i class="fas fa-star"></i> Review</a>
+                        <a href="#kontak" class="sidebar-link"><i class="fas fa-envelope"></i> Kontak</a>
+                        <a href="#logout" class="sidebar-link" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </nav>
+                </aside>
+                <div class="dashboard-main">
+                    <header class="dashboard-header">
+                        <input type="text" class="dashboard-search" placeholder="Cari...">
+                        <div class="dashboard-user"><i class="fas fa-user-circle"></i> Admin</div>
+                    </header>
+                    <div class="dashboard-content-area">
+                        <h2 class="dashboard-title">Dashboard</h2>
+                        <div class="dashboard-stats-row">
+                            <div class="dashboard-stat-card">
+                                <div class="stat-icon stat-icon-red"><i class="fas fa-box"></i></div>
+                                <div class="stat-info">
+                                    <div class="stat-label">PRODUK</div>
+                                    <div class="stat-value">9</div>
+                                    <div class="stat-desc">Jumlah produk yang tersedia</div>
+                                </div>
+                            </div>
+                            <div class="dashboard-stat-card">
+                                <div class="stat-icon stat-icon-yellow"><i class="fas fa-bell"></i></div>
+                                <div class="stat-info">
+                                    <div class="stat-label">PELAYANAN</div>
+                                    <div class="stat-value">5</div>
+                                    <div class="stat-desc">Pelayanan yang tersedia</div>
+                                </div>
+                            </div>
+                            <div class="dashboard-stat-card">
+                                <div class="stat-icon stat-icon-green"><i class="fas fa-shopping-cart"></i></div>
+                                <div class="stat-info">
+                                    <div class="stat-label">PESANAN</div>
+                                    <div class="stat-value">4</div>
+                                    <div class="stat-desc">Jumlah pesanan diterima</div>
+                                </div>
+                            </div>
+                            <div class="dashboard-stat-card">
+                                <div class="stat-icon stat-icon-blue"><i class="fas fa-money-bill-wave"></i></div>
+                                <div class="stat-info">
+                                    <div class="stat-label">PENDAPATAN</div>
+                                    <div class="stat-value">Rp 127.985,00</div>
+                                    <div class="stat-desc">Total pendapatan</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dashboard-graph-row">
+                            <div class="dashboard-graph-card">
+                                <div class="graph-title">Ringkasan Penjualan</div>
+                                <canvas id="salesChart" width="400" height="180"></canvas>
+                            </div>
+                            <div class="dashboard-graph-card">
+                                <div class="graph-title">Pendapatan</div>
+                                <canvas id="incomeChart" width="400" height="180"></canvas>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="content-area">
-                <div class="produk-bar">
-                    <h2>Kelola Produk</h2>
-                    <button class="add-product-btn" onclick="showAddProductForm()">
-                        <i class="fas fa-plus"></i> Tambah
-                    </button>
-                </div>
-                <div class="products-grid" id="productsGrid">
-                    <!-- Products will be loaded here dynamically -->
-                </div>
-            </div>
         </div>
-    </div>
-    <!-- Add/Edit Product Modal -->
-    <div id="productModal" class="modal-produk" style="display:none;">
-        <div class="modal-content">
-            <span class="close-modal" id="closeModalTambah">&times;</span>
-            <h3 style="margin-bottom:1.2rem;">Tambah Produk</h3>
-            <form id="productForm" enctype="multipart/form-data">
-                <div class="form-group">
-                    <label for="productName">Nama Produk</label>
-                    <input type="text" id="productName" name="name" placeholder="Masukkan nama produk" required>
-                </div>
-                <div class="form-group">
-                    <label for="productPrice">Harga (Rp)</label>
-                    <input type="number" id="productPrice" name="price" placeholder="Masukkan harga" required>
-                </div>
-                <div class="form-group">
-                    <label for="productStock">Stok</label>
-                    <input type="number" id="productStock" name="stock" placeholder="Masukkan stok" required>
-                </div>
-                <div class="form-group">
-                    <label for="productCategory">Kategori</label>
-                    <select id="productCategory" name="category" required>
-                        <option value="">Pilih Kategori</option>
-                        <option value="Bahan">Bahan</option>
-                        <option value="Alat">Alat</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="productDesc">Deskripsi</label>
-                    <textarea id="productDesc" name="description" rows="2" placeholder="Deskripsi produk (opsional)"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="productImage">Gambar Produk</label>
-                    <input type="file" id="productImage" name="image" accept="image/*" required>
-                </div>
-                <div class="form-group">
-                    <button type="submit" class="submit-btn">Simpan</button>
-                </div>
-            </form>
+    </main>
+    <div id="popupNotif" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.4);z-index:9999;align-items:center;justify-content:center;">
+        <div style="background:#fff;padding:2rem 2.5rem;border-radius:16px;box-shadow:0 4px 24px rgba(35,57,93,0.18);min-width:300px;max-width:90vw;text-align:center;">
+            <div id="popupNotifMsg" style="margin-bottom:1.5rem;font-size:1.1rem;"></div>
+            <button onclick="document.getElementById('popupNotif').style.display='none'" style="padding:0.5rem 1.5rem;border:none;background:#7a4956;color:#fff;border-radius:8px;font-size:1rem;cursor:pointer;">OK</button>
         </div>
     </div>
     <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        if (document.getElementById('salesChart')) {
+            new Chart(document.getElementById('salesChart').getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
+                    datasets: [{
+                        label: 'Penjualan',
+                        data: [12, 19, 3, 5, 2, 3, 7, 8, 6, 10, 9, 11],
+                        backgroundColor: '#90caf9',
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    plugins: { legend: { display: false } },
+                    scales: { y: { beginAtZero: true } }
+                }
+            });
+        }
+        if (document.getElementById('incomeChart')) {
+            new Chart(document.getElementById('incomeChart').getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
+                    datasets: [{
+                        label: 'Pendapatan',
+                        data: [10000, 15000, 12000, 17000, 14000, 127985, 13000, 16000, 18000, 20000, 21000, 22000],
+                        fill: true,
+                        backgroundColor: 'rgba(255, 235, 59, 0.2)',
+                        borderColor: '#fdd835',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    plugins: { legend: { display: false } },
+                    scales: { y: { beginAtZero: true } }
+                }
+            });
+        }
+    });
+    </script>
 </body>
 </html> 

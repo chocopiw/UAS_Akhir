@@ -78,6 +78,27 @@ document.addEventListener('DOMContentLoaded', function() {
             logout();
         });
     }
+
+    // Modal Tambah Produk (Kelola Produk)
+    var btnShowTambah = document.getElementById('btnShowTambahProduk');
+    var modalTambah = document.getElementById('modalTambahProduk');
+    var closeModalTambah = document.getElementById('closeModalTambah');
+
+    if (btnShowTambah && modalTambah) {
+        btnShowTambah.onclick = function() {
+            modalTambah.style.display = 'flex';
+        };
+    }
+    if (closeModalTambah && modalTambah) {
+        closeModalTambah.onclick = function() {
+            modalTambah.style.display = 'none';
+        };
+    }
+    window.onclick = function(event) {
+        if (event.target === modalTambah) {
+            modalTambah.style.display = 'none';
+        }
+    };
 });
 
 // Check authentication status
@@ -314,44 +335,10 @@ function setupSidebarNavigation() {
             showPage(page);
             // Jika kelola produk, muat data produk
             if (page === 'kelolaProduk') {
-                loadProduk();
+                // loadProducts();
             }
         });
     });
-}
-
-// Fungsi untuk memuat produk dari backend dan tampilkan di grid
-async function loadProduk() {
-    const grid = document.getElementById('produkGrid');
-    grid.innerHTML = '<div>Loading...</div>';
-    try {
-        const res = await fetch('api/produk.php');
-        const data = await res.json();
-        if (data.success) {
-            if (data.data.length === 0) {
-                grid.innerHTML = '<div>Tidak ada produk.</div>';
-                return;
-            }
-            grid.innerHTML = '';
-            data.data.forEach(prod => {
-                const card = document.createElement('div');
-                card.className = 'produk-card';
-                card.innerHTML = `
-                    <img src="uploads/${prod.gambar}" alt="${prod.nama}" class="produk-img">
-                    <div class="produk-info">
-                        <div class="produk-nama">${prod.nama}</div>
-                        <div class="produk-harga">Rp ${parseInt(prod.harga).toLocaleString()}</div>
-                        <div class="produk-stok">Stok: ${prod.stok ?? '-'}</div>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-        } else {
-            grid.innerHTML = '<div>Gagal memuat produk.</div>';
-        }
-    } catch (err) {
-        grid.innerHTML = '<div>Gagal memuat produk.</div>';
-    }
 }
 
 // SPA Hash Navigation
@@ -441,45 +428,6 @@ function showAddProductForm() {
     modal.style.display = "block";
 }
 
-// Load products
-function loadProducts() {
-    fetch('api/produk.php')
-        .then(response => response.json())
-        .then(data => {
-            products = data;
-            displayProducts();
-        })
-        .catch(error => console.error('Error:', error));
-}
-
-// Display products in grid
-function displayProducts() {
-    const grid = document.getElementById('productsGrid');
-    if (!grid) return;
-
-    grid.innerHTML = '';
-    products.forEach(product => {
-        const card = document.createElement('div');
-        card.className = 'product-card';
-        card.innerHTML = `
-            <img src="${product.image}" alt="${product.name}" class="product-image">
-            <div class="product-info">
-                <h3 class="product-name">${product.name}</h3>
-                <div class="product-price">Rp ${formatPrice(product.price)}</div>
-            </div>
-            <div class="product-actions">
-                <button class="action-btn edit-btn" onclick="editProduct(${product.id})">
-                    <i class="fas fa-edit"></i> Edit
-                </button>
-                <button class="action-btn delete-btn" onclick="deleteProduct(${product.id})">
-                    <i class="fas fa-trash"></i> Hapus
-                </button>
-            </div>
-        `;
-        grid.appendChild(card);
-    });
-}
-
 // Format price with thousand separator
 function formatPrice(price) {
     return new Intl.NumberFormat('id-ID').format(price);
@@ -506,7 +454,7 @@ function deleteProduct(id) {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                loadProducts();
+                // loadProducts();
             } else {
                 alert('Gagal menghapus produk');
             }
@@ -534,7 +482,7 @@ if (productForm) {
         .then(data => {
             if (data.success) {
                 modal.style.display = "none";
-                loadProducts();
+                // loadProducts();
                 productForm.reset();
             } else {
                 alert('Gagal menyimpan produk');
@@ -544,14 +492,64 @@ if (productForm) {
     };
 }
 
-// Load products when page loads
-document.addEventListener('DOMContentLoaded', function() {
-    loadProducts();
-});
-
 function setActiveSidebar(menuId) {
     const sidebarLinks = document.querySelectorAll('.sidebar a');
     sidebarLinks.forEach(link => link.classList.remove('active'));
     const activeLink = document.getElementById(menuId);
     if (activeLink) activeLink.classList.add('active');
+}
+
+// Fungsi untuk mengambil dan menampilkan produk
+function loadProducts() {
+    const produkGrid = document.getElementById('produkGrid');
+    produkGrid.innerHTML = '<div>Loading...</div>';
+    fetch('api/produk.php')
+        .then(response => response.json())
+        .then(data => {
+            produkGrid.innerHTML = '';
+            if (Array.isArray(data) && data.length > 0) {
+                data.forEach(produk => {
+                    const card = document.createElement('div');
+                    card.className = 'produk-card';
+                    card.innerHTML = `
+                        <img src="${produk.image ? produk.image : 'https://via.placeholder.com/80'}" alt="${produk.name}">
+                        <div class="produk-nama">${produk.name}</div>
+                        <div class="produk-harga">Rp ${Number(produk.price).toLocaleString('id-ID')}</div>
+                    `;
+                    produkGrid.appendChild(card);
+                });
+            } else {
+                produkGrid.innerHTML = '<div>Tidak ada produk.</div>';
+            }
+        })
+        .catch(err => {
+            produkGrid.innerHTML = '<div>Gagal memuat produk.</div>';
+        });
+}
+
+// Panggil loadProducts saat halaman dimuat
+window.addEventListener('DOMContentLoaded', loadProducts);
+
+// Setelah submit produk, panggil loadProducts
+const formTambahProduk = document.getElementById('formTambahProduk');
+if (formTambahProduk) {
+    formTambahProduk.onsubmit = function(e) {
+        e.preventDefault();
+        const formData = new FormData(formTambahProduk);
+        fetch('api/produk.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById('modalTambahProduk').style.display = 'none';
+                formTambahProduk.reset();
+                loadProducts();
+            } else {
+                alert('Gagal menyimpan produk');
+            }
+        })
+        .catch(error => alert('Gagal menyimpan produk'));
+    };
 } 
