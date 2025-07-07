@@ -55,26 +55,15 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Sidebar navigation
-    const kelolaProdukMenu = document.getElementById('kelolaProdukMenu');
-    if (kelolaProdukMenu) {
-        kelolaProdukMenu.addEventListener('click', function(e) {
-            e.preventDefault();
-            showPage('kelolaProdukPage');
-            setActiveSidebar('kelolaProdukMenu');
-        });
-    }
     const penggunaMenu = document.getElementById('penggunaMenu');
     if (penggunaMenu) {
         penggunaMenu.addEventListener('click', function(e) {
-            e.preventDefault();
             showPage('penggunaPage');
-            setActiveSidebar('penggunaMenu');
         });
     }
     const logoutMenu = document.getElementById('logoutMenu');
     if (logoutMenu) {
         logoutMenu.addEventListener('click', function(e) {
-            e.preventDefault();
             logout();
         });
     }
@@ -99,6 +88,21 @@ document.addEventListener('DOMContentLoaded', function() {
             modalTambah.style.display = 'none';
         }
     };
+
+    // Fallback: pastikan semua .sidebar-link redirect ke href-nya
+    if (typeof window !== 'undefined') {
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.sidebar-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    // Jika href bukan hash, redirect manual
+                    const href = this.getAttribute('href');
+                    if (href && !href.startsWith('#')) {
+                        window.location.href = href;
+                    }
+                });
+            });
+        });
+    }
 });
 
 // Check authentication status
@@ -219,16 +223,11 @@ function showPage(pageName) {
 
 // Update navigation
 function updateNavigation(isLoggedIn) {
+    // Cek elemen sebelum akses .style
     const loginLink = document.getElementById('loginLink');
     const kelolaProdukLink = document.getElementById('kelolaProdukLink');
-    
-    if (isLoggedIn) {
-        loginLink.style.display = 'none';
-        kelolaProdukLink.style.display = 'inline-block';
-    } else {
-        loginLink.style.display = 'inline-block';
-        kelolaProdukLink.style.display = 'none';
-    }
+    if (loginLink) loginLink.style.display = isLoggedIn ? 'none' : '';
+    if (kelolaProdukLink) kelolaProdukLink.style.display = isLoggedIn ? '' : 'none';
 }
 
 // Update dashboard
@@ -320,7 +319,6 @@ function setupSidebarNavigation() {
     const sidebarLinks = document.querySelectorAll('.sidebar-link');
     sidebarLinks.forEach(link => {
         link.addEventListener('click', function(e) {
-            e.preventDefault();
             // Hapus class active dari semua link
             sidebarLinks.forEach(l => l.classList.remove('active'));
             this.classList.add('active');
@@ -727,6 +725,22 @@ function displayPelayanan(pelayananList) {
         `;
         pelayananGrid.appendChild(card);
     });
+
+    // Isi dropdown jenis layanan dari layanan aktif
+    isiDropdownJenisLayanan();
+}
+
+// Isi dropdown jenis layanan dari layanan aktif
+function isiDropdownJenisLayanan() {
+    const select = document.getElementById('jenisLayanan');
+    if (!select) return;
+    select.innerHTML = '<option value="">-- Pilih Layanan --</option>';
+    pelayanan.filter(p => p.status === 'aktif').forEach(item => {
+        const opt = document.createElement('option');
+        opt.value = item.id;
+        opt.textContent = item.nama_pelayanan;
+        select.appendChild(opt);
+    });
 }
 
 // Handle tambah pelayanan
@@ -844,5 +858,46 @@ function deletePelayanan(id) {
     .catch(error => {
         console.error('Error:', error);
         showPopup('Gagal menghapus pelayanan');
+    });
+}
+
+// Handle submit form permintaan layanan
+const formPesanLayanan = document.getElementById('formPesanLayanan');
+if (formPesanLayanan) {
+    formPesanLayanan.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const nama = document.getElementById('namaPemesan').value;
+        const pelayanan_id = document.getElementById('jenisLayanan').value;
+        const deskripsi = document.getElementById('deskripsiKebutuhan').value;
+        if (!nama || !pelayanan_id || !deskripsi) {
+            showPopup('Mohon lengkapi semua data!');
+            return;
+        }
+        // Kirim ke backend (tanpa login user, user_id = NULL)
+        const body = {
+            action: 'pesan',
+            user_id: null,
+            pelayanan_id: pelayanan_id,
+            tanggal_pesanan: new Date().toISOString().slice(0,10),
+            waktu_pesanan: new Date().toTimeString().slice(0,5),
+            catatan: deskripsi,
+            nama_pemesan: nama
+        };
+        try {
+            const res = await fetch('api/pelayanan.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            });
+            const data = await res.json();
+            if (data.success) {
+                showPopup('Permintaan layanan berhasil dikirim!');
+                formPesanLayanan.reset();
+            } else {
+                showPopup('Gagal mengirim permintaan: ' + (data.message || '')); 
+            }
+        } catch (err) {
+            showPopup('Gagal mengirim permintaan.');
+        }
     });
 } 

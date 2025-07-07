@@ -23,6 +23,15 @@
         }
         .alert { margin-bottom: 1rem; padding: 1rem; border-radius: 8px; }
         .alert-error { background: #fdeaea; color: #c62828; }
+        .alert-success { background: #e8f5e8; color: #2e7d32; }
+        .test-credentials {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
     </style>
 </head>
 <body>
@@ -30,19 +39,23 @@
         <div class="nav-brand">MyApp</div>
         <div class="nav-menu" id="navMenu">
             <a href="login.html" class="nav-link" id="loginLink">Login</a>
-            <a href="kelola_produk.html" class="nav-link" id="kelolaProdukLink" style="display: none;">Kelola Produk</a>
         </div>
     </nav>
     <main class="container">
         <div id="loginPage" class="page">
             <div class="form-container">
                 <h2>Login Admin</h2>
+                <div class="test-credentials">
+                    <strong>Kredensial Testing:</strong><br>
+                    Username: admin<br>
+                    Password: admin123
+                </div>
                 <div id="alert"></div>
                 <form id="loginForm" class="form">
                     <div class="form-group">
                         <div class="input-wrapper">
                             <i class="fas fa-user"></i>
-                            <input type="text" id="loginUsername" placeholder="Username" required>
+                            <input type="text" id="loginUsername" placeholder="Username atau Email" required>
                         </div>
                     </div>
                     <div class="form-group">
@@ -66,34 +79,59 @@
         </div>
     </div>
     <script>
-    document.getElementById('loginForm').addEventListener('submit', async function(e) {
-        e.preventDefault();
-        const email = document.getElementById('loginUsername').value;
-        const password = document.getElementById('loginPassword').value;
+    document.addEventListener('DOMContentLoaded', function() {
+        const loginForm = document.getElementById('loginForm');
         const alertDiv = document.getElementById('alert');
-        alertDiv.innerHTML = '';
-        try {
-            const response = await fetch('api/auth.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    action: 'login',
-                    email: email,
-                    password: password
-                })
+        
+        if (loginForm) {
+            loginForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const username = document.getElementById('loginUsername').value;
+                const password = document.getElementById('loginPassword').value;
+                
+                // Clear previous alerts
+                alertDiv.innerHTML = '';
+                
+                // Basic validation
+                if (!username || !password) {
+                    alertDiv.innerHTML = '<div class="alert alert-error">Username dan password harus diisi!</div>';
+                    return;
+                }
+                
+                try {
+                    const response = await fetch('api/auth.php', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            action: 'login',
+                            email: username, // Backend accepts both email and username
+                            password: password
+                        })
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        alertDiv.innerHTML = '<div class="alert alert-success">Login berhasil! Mengalihkan ke dashboard...</div>';
+                        localStorage.setItem('currentUser', JSON.stringify(data.user));
+                        
+                        // Redirect after a short delay
+                        setTimeout(() => {
+                            window.location.href = 'dashboard.html';
+                        }, 1000);
+                    } else {
+                        alertDiv.innerHTML = `<div class="alert alert-error">${data.error || 'Login gagal! Periksa username dan password.'}</div>`;
+                    }
+                } catch (error) {
+                    console.error('Login error:', error);
+                    alertDiv.innerHTML = '<div class="alert alert-error">Terjadi kesalahan pada server. Periksa koneksi internet Anda.</div>';
+                }
             });
-            const data = await response.json();
-            if (data.success) {
-                alert('Login berhasil!');
-                localStorage.setItem('currentUser', JSON.stringify(data.user));
-                window.location.href = 'dashboard.html';
-            } else {
-                alertDiv.innerHTML = `<div class='alert alert-error'>${data.error || 'Login gagal'}</div>`;
-                alert(data.error || 'Login gagal');
-            }
-        } catch (err) {
-            alertDiv.innerHTML = '<div class="alert alert-error">Terjadi kesalahan pada server</div>';
-            alert('Terjadi kesalahan pada server');
         }
     });
     </script>

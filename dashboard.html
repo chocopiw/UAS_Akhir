@@ -21,15 +21,15 @@
                 <aside class="dashboard-sidebar">
                     <div class="sidebar-brand"><i class="fas fa-coffee"></i> Toko Kopi</div>
                     <nav class="sidebar-menu">
-                        <a href="dashboard.html" class="sidebar-link active" id="sidebarDashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-                        <a href="kelola_produk.html" class="sidebar-link" id="sidebarKelolaProduk"><i class="fas fa-box"></i> Kelola Produk</a>
-                        <a href="#pelayanan" class="sidebar-link"><i class="fas fa-bell"></i> Pelayanan</a>
-                        <a href="#pesanan" class="sidebar-link"><i class="fas fa-shopping-cart"></i> Pesanan</a>
-                        <a href="#kupon" class="sidebar-link"><i class="fas fa-ticket-alt"></i> Kupon</a>
-                        <a href="#penjualan" class="sidebar-link"><i class="fas fa-chart-line"></i> Penjualan</a>
-                        <a href="#pelanggan" class="sidebar-link"><i class="fas fa-users"></i> Pelanggan</a>
-                        <a href="#review" class="sidebar-link"><i class="fas fa-star"></i> Review</a>
-                        <a href="#kontak" class="sidebar-link"><i class="fas fa-envelope"></i> Kontak</a>
+                        <a href="dashboard.html" class="sidebar-link" id="sidebarDashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                        <a href="#" class="sidebar-link submenu" id="sidebarKategoriProduk" style="margin-left:24px;"><i class="fas fa-list"></i> Kategori Produk</a>
+                        <a href="kelola_produk.html" class="sidebar-link" id="sidebarKelolaProduk"><i class="fas fa-box"></i> Produk</a>
+                        <a href="pesanan.html" class="sidebar-link" id="sidebarPesanan"><i class="fas fa-file-alt"></i> Pesanan</a>
+                        <a href="#kupon" class="sidebar-link" id="sidebarKupon"><i class="fas fa-ticket-alt"></i> Kupon</a>
+                        <a href="#pembayaran" class="sidebar-link" id="sidebarPembayaran"><i class="fas fa-credit-card"></i> Pembayaran</a>
+                        <a href="#pelanggan" class="sidebar-link" id="sidebarPelanggan"><i class="fas fa-users"></i> Pelanggan</a>
+                        <a href="#review" class="sidebar-link" id="sidebarReview"><i class="fas fa-pen-square"></i> Review Pelanggan</a>
+                        <a href="#kontak" class="sidebar-link" id="sidebarKontak"><i class="fas fa-phone"></i> Kontak</a>
                         <a href="#logout" class="sidebar-link" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
                     </nav>
                 </aside>
@@ -137,7 +137,47 @@
                 }
             });
         }
+        // Sidebar Pelanggan
+        const sidebarPelanggan = document.querySelector('.sidebar-link[href="#pelanggan"]');
+        if (sidebarPelanggan) {
+            sidebarPelanggan.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('dashboardContentArea').style.display = 'none';
+                document.getElementById('pelangganContentArea').style.display = 'block';
+                loadPelanggan();
+                document.querySelectorAll('.sidebar-link').forEach(link => link.classList.remove('active'));
+                sidebarPelanggan.classList.add('active');
+            });
+        }
     });
+
+    function loadPelanggan() {
+        fetch('api/auth.php?action=list_users')
+            .then(response => response.json())
+            .then(data => {
+                const tbody = document.querySelector('#pelangganTable tbody');
+                tbody.innerHTML = '';
+                if (data.success && Array.isArray(data.users)) {
+                    data.users.forEach(user => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td>${user.name}</td>
+                            <td>${user.username}</td>
+                            <td>${user.email}</td>
+                            <td>${user.phone_number || '-'}</td>
+                            <td>${user.address || '-'}</td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                } else {
+                    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">Tidak ada data pelanggan.</td></tr>';
+                }
+            })
+            .catch(() => {
+                const tbody = document.querySelector('#pelangganTable tbody');
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">Gagal memuat data pelanggan.</td></tr>';
+            });
+    }
     </script>
 </body>
 </html> 

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Pesanan Customer</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body { background: #eaf1fb; }
+        .main-header-pesanan {
+            background: #253a6b;
+            color: #fff;
+            padding: 1.2rem 2rem 1.2rem 260px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-radius: 0 0 16px 16px;
+            position: relative;
+        }
+        .main-header-pesanan .search-bar {
+            background: #fff;
+            border-radius: 20px;
+            padding: 0.5rem 1.5rem;
+            border: none;
+            font-size: 1rem;
+            width: 260px;
+            margin-right: 1.5rem;
+        }
+        .main-header-pesanan .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            font-weight: 500;
+        }
+        .main-header-pesanan .user-info i {
+            font-size: 1.5rem;
+        }
+        .pesanan-content {
+            margin-left: 260px;
+            padding: 2.5rem 2rem 2rem 2rem;
+        }
+        .pesanan-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+        .pesanan-table-container {
+            background: #fff;
+            border-radius: 16px;
+            padding: 2rem 2rem 1.5rem 2rem;
+            box-shadow: 0 4px 24px rgba(35,57,93,0.08);
+        }
+        table.pesanan-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 0.5rem;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        .pesanan-table th, .pesanan-table td {
+            padding: 0.7rem 1rem;
+            text-align: left;
+        }
+        .pesanan-table th {
+            background: #253a6b;
+            color: #fff;
+            font-weight: 600;
+        }
+        .pesanan-table tr {
+            background: #fff;
+        }
+        .pesanan-table tr:nth-child(even) { background: #f6f8fa; }
+        .pesanan-table td.status-selesai { color: #2ecc40; font-weight: bold; }
+        .pesanan-table td.status-proses { color: #f1c40f; font-weight: bold; }
+        .pesanan-table td.aksi {
+            text-align: center;
+        }
+        .btn-lihat {
+            background: #3498db;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 0.4rem 0.7rem;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+        .btn-lihat:hover { background: #217dbb; }
+        .dashboard-sidebar {
+            width: 260px;
+            background: #253a6b;
+            color: #fff;
+            min-height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+        }
+        .sidebar-brand {
+            font-size: 1.3rem;
+            font-weight: bold;
+            padding: 2rem 1.5rem 1.2rem 2rem;
+            border-bottom: 1px solid #334a7c;
+        }
+        .sidebar-menu {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+            margin-top: 1.2rem;
+        }
+        .sidebar-link {
+            color: #fff;
+            text-decoration: none;
+            padding: 0.85rem 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border-radius: 8px 0 0 8px;
+            font-size: 1rem;
+            transition: background 0.2s;
+        }
+        .sidebar-link.active, .sidebar-link:hover {
+            background: #3a4e7c;
+        }
+        .sidebar-link.submenu {
+            font-size: 0.97rem;
+            margin-left: 18px;
+            opacity: 0.85;
+        }
+        .sidebar-link i { min-width: 20px; text-align: center; }
+        .sidebar-link:last-child { margin-bottom: 1.5rem; }
+        @media (max-width: 900px) {
+            .dashboard-sidebar { width: 100px; }
+            .main-header-pesanan { padding-left: 100px; }
+            .pesanan-content { margin-left: 100px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-sidebar">
+        <div class="sidebar-brand"><i class="fas fa-coffee"></i> Toko Kopi</div>
+        <nav class="sidebar-menu">
+            <a href="dashboard.html" class="sidebar-link" id="sidebarDashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            <a href="#" class="sidebar-link submenu" id="sidebarKategoriProduk"><i class="fas fa-list"></i> Kategori Produk</a>
+            <a href="kelola_produk.html" class="sidebar-link" id="sidebarKelolaProduk"><i class="fas fa-box"></i> Produk</a>
+            <a href="pesanan.html" class="sidebar-link active" id="sidebarPesanan"><i class="fas fa-file-alt"></i> Pesanan</a>
+            <a href="#kupon" class="sidebar-link" id="sidebarKupon"><i class="fas fa-ticket-alt"></i> Kupon</a>
+            <a href="#pembayaran" class="sidebar-link" id="sidebarPembayaran"><i class="fas fa-credit-card"></i> Pembayaran</a>
+            <a href="#pelanggan" class="sidebar-link" id="sidebarPelanggan"><i class="fas fa-users"></i> Pelanggan</a>
+            <a href="#review" class="sidebar-link" id="sidebarReview"><i class="fas fa-pen-square"></i> Review Pelanggan</a>
+            <a href="#kontak" class="sidebar-link" id="sidebarKontak"><i class="fas fa-phone"></i> Kontak</a>
+            <a href="#logout" class="sidebar-link" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </nav>
+    </div>
+    <div class="main-header-pesanan">
+        <input type="text" class="search-bar" placeholder="Cari...">
+        <div class="user-info">
+            <i class="fas fa-user-circle"></i> Admin
+        </div>
+    </div>
+    <div class="pesanan-content">
+        <div class="pesanan-title">Daftar Pesanan Customer</div>
+        <div class="pesanan-table-container">
+            <table class="pesanan-table">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nama Customer</th>
+                        <th>Produk</th>
+                        <th>Jumlah</th>
+                        <th>Total Harga</th>
+                        <th>Status</th>
+                        <th>Tanggal</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="pesanan-tbody">
+                    <!-- Data pesanan akan diisi via JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script>
+    // Fungsi format rupiah
+    function formatRupiah(angka) {
+        return 'Rp ' + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
+
+    // Render status dengan warna
+    function renderStatus(status) {
+        if (status === 'Selesai') return '<span class="status-selesai">Selesai</span>';
+        if (status === 'Proses') return '<span class="status-proses">Proses</span>';
+        return status;
+    }
+
+    // Ambil data pesanan dari API dan render ke tabel
+    fetch('api/pesanan.php')
+        .then(res => {
+            if (!res.ok) throw new Error('HTTP error ' + res.status);
+            return res.json();
+        })
+        .then(json => {
+            const tbody = document.getElementById('pesanan-tbody');
+            tbody.innerHTML = '';
+            json.data.forEach((row, idx) => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${idx+1}</td>
+                        <td>${row.nama_customer}</td>
+                        <td>${row.produk}</td>
+                        <td>${row.jumlah}</td>
+                        <td>${formatRupiah(row.total_harga)}</td>
+                        <td>${renderStatus(row.status)}</td>
+                        <td>${row.tanggal.split('-').reverse().join('/')}</td>
+                        <td class="aksi"><button class="btn-lihat"><i class="fas fa-eye"></i></button></td>
+                    </tr>
+                `;
+            });
+        })
+        .catch((err) => {
+            document.getElementById('pesanan-tbody').innerHTML = '<tr><td colspan="8">Gagal memuat data pesanan.<br>'+err+'</td></tr>';
+            console.error('Gagal fetch data pesanan:', err);
+        });
+    </script>
+</body>
+</html> 

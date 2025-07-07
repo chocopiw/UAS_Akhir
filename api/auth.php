@@ -26,6 +26,14 @@ switch($method) {
             echo json_encode(['error' => 'Action not specified']);
         }
         break;
+    case 'GET':
+        if (isset($_GET['action']) && $_GET['action'] === 'list_users') {
+            $stmt = $pdo->query('SELECT id, name, username, email, phone_number, address FROM users');
+            $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            echo json_encode(['success' => true, 'users' => $users]);
+            exit();
+        }
+        break;
     default:
         http_response_code(405);
         echo json_encode(['error' => 'Method not allowed']);
@@ -113,22 +121,6 @@ function handleRegister($data) {
         error_log("Registration error: " . $e->getMessage());
         http_response_code(500);
         echo json_encode(['error' => 'Registrasi gagal']);
-    }
-}
-
-function setupEventListeners() {
-    // Login form
-    const loginForm = document.getElementById('loginForm');
-    if (loginForm) {
-        console.log('Login form found');
-        loginForm.addEventListener('submit', handleLogin);
-    } else {
-        console.log('Login form NOT found');
-    }
-    // Register form
-    const registerForm = document.getElementById('registerForm');
-    if (registerForm) {
-        registerForm.addEventListener('submit', handleRegister);
     }
 }
 ?> 
