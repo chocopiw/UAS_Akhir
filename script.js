@@ -587,4 +587,262 @@ function showPageByHash() {
     }
 }
 window.addEventListener('hashchange', showPageByHash);
-window.addEventListener('DOMContentLoaded', showPageByHash); 
+window.addEventListener('DOMContentLoaded', showPageByHash);
+
+// Pelayanan Management
+let pelayanan = [];
+
+// Initialize pelayanan functionality
+document.addEventListener('DOMContentLoaded', function() {
+    // Load pelayanan if on pelayanan page
+    if (window.location.pathname.includes('pelayanan.html') || document.getElementById('pelayananGrid')) {
+        loadPelayanan();
+        setupPelayananEventListeners();
+    }
+});
+
+function setupPelayananEventListeners() {
+    // Modal Tambah Pelayanan
+    const btnShowTambahPelayanan = document.getElementById('btnShowTambahPelayanan');
+    const modalTambahPelayanan = document.getElementById('modalTambahPelayanan');
+    const closeModalTambahPelayanan = document.getElementById('closeModalTambahPelayanan');
+    const btnBatalTambahPelayanan = document.getElementById('btnBatalTambahPelayanan');
+
+    if (btnShowTambahPelayanan && modalTambahPelayanan) {
+        btnShowTambahPelayanan.onclick = function() {
+            modalTambahPelayanan.style.display = 'flex';
+        };
+    }
+
+    if (closeModalTambahPelayanan && modalTambahPelayanan) {
+        closeModalTambahPelayanan.onclick = function() {
+            modalTambahPelayanan.style.display = 'none';
+        };
+    }
+
+    if (btnBatalTambahPelayanan && modalTambahPelayanan) {
+        btnBatalTambahPelayanan.onclick = function() {
+            modalTambahPelayanan.style.display = 'none';
+        };
+    }
+
+    // Modal Edit Pelayanan
+    const modalEditPelayanan = document.getElementById('modalEditPelayanan');
+    const closeModalEditPelayanan = document.getElementById('closeModalEditPelayanan');
+    const btnBatalEditPelayanan = document.getElementById('btnBatalEditPelayanan');
+
+    if (closeModalEditPelayanan && modalEditPelayanan) {
+        closeModalEditPelayanan.onclick = function() {
+            modalEditPelayanan.style.display = 'none';
+        };
+    }
+
+    if (btnBatalEditPelayanan && modalEditPelayanan) {
+        btnBatalEditPelayanan.onclick = function() {
+            modalEditPelayanan.style.display = 'none';
+        };
+    }
+
+    // Close modals when clicking outside
+    window.onclick = function(event) {
+        if (event.target === modalTambahPelayanan) {
+            modalTambahPelayanan.style.display = 'none';
+        }
+        if (event.target === modalEditPelayanan) {
+            modalEditPelayanan.style.display = 'none';
+        }
+    };
+
+    // Form submissions
+    const formTambahPelayanan = document.getElementById('formTambahPelayanan');
+    if (formTambahPelayanan) {
+        formTambahPelayanan.addEventListener('submit', handleTambahPelayanan);
+    }
+
+    const formEditPelayanan = document.getElementById('formEditPelayanan');
+    if (formEditPelayanan) {
+        formEditPelayanan.addEventListener('submit', handleEditPelayanan);
+    }
+}
+
+// Load pelayanan from API
+function loadPelayanan() {
+    const pelayananGrid = document.getElementById('pelayananGrid');
+    if (!pelayananGrid) return;
+
+    pelayananGrid.innerHTML = '<div style="text-align: center; padding: 2rem; color: #666;">Loading pelayanan...</div>';
+
+    fetch('api/pelayanan.php')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success && Array.isArray(data.data)) {
+                pelayanan = data.data;
+                displayPelayanan(pelayanan);
+            } else {
+                pelayananGrid.innerHTML = '<div style="text-align: center; padding: 2rem; color: #666;">Tidak ada pelayanan tersedia.</div>';
+            }
+        })
+        .catch(error => {
+            console.error('Error loading pelayanan:', error);
+            pelayananGrid.innerHTML = '<div style="text-align: center; padding: 2rem; color: #f44336;">Gagal memuat pelayanan.</div>';
+        });
+}
+
+// Display pelayanan in grid
+function displayPelayanan(pelayananList) {
+    const pelayananGrid = document.getElementById('pelayananGrid');
+    if (!pelayananGrid) return;
+
+    pelayananGrid.innerHTML = '';
+
+    if (pelayananList.length === 0) {
+        pelayananGrid.innerHTML = '<div style="text-align: center; padding: 2rem; color: #666;">Tidak ada pelayanan tersedia.</div>';
+        return;
+    }
+
+    pelayananList.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'pelayanan-card';
+        card.innerHTML = `
+            <div class="pelayanan-header">
+                <div class="pelayanan-status ${item.status}">${item.status}</div>
+                <div class="pelayanan-nama">${item.nama_pelayanan}</div>
+                <div class="pelayanan-harga">Rp ${formatPrice(item.harga)}</div>
+                <div class="pelayanan-durasi">
+                    <i class="fas fa-clock"></i>
+                    ${item.durasi} menit
+                </div>
+            </div>
+            <div class="pelayanan-body">
+                <div class="pelayanan-deskripsi">${item.deskripsi || 'Tidak ada deskripsi'}</div>
+                <div class="pelayanan-actions">
+                    <button class="pelayanan-btn edit" onclick="editPelayanan(${item.id})">
+                        <i class="fas fa-edit"></i> Edit
+                    </button>
+                    <button class="pelayanan-btn delete" onclick="deletePelayanan(${item.id})">
+                        <i class="fas fa-trash"></i> Hapus
+                    </button>
+                </div>
+            </div>
+        `;
+        pelayananGrid.appendChild(card);
+    });
+}
+
+// Handle tambah pelayanan
+async function handleTambahPelayanan(e) {
+    e.preventDefault();
+
+    const formData = {
+        action: 'create',
+        nama_pelayanan: document.getElementById('namaPelayanan').value,
+        deskripsi: document.getElementById('deskripsiPelayanan').value,
+        harga: parseFloat(document.getElementById('hargaPelayanan').value),
+        durasi: parseInt(document.getElementById('durasiPelayanan').value),
+        status: document.getElementById('statusPelayanan').value
+    };
+
+    try {
+        const response = await fetch('api/pelayanan.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData)
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            showPopup('Pelayanan berhasil ditambahkan!');
+            document.getElementById('modalTambahPelayanan').style.display = 'none';
+            document.getElementById('formTambahPelayanan').reset();
+            loadPelayanan();
+        } else {
+            showPopup('Gagal menambahkan pelayanan: ' + data.message);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        showPopup('Gagal menambahkan pelayanan');
+    }
+}
+
+// Handle edit pelayanan
+async function handleEditPelayanan(e) {
+    e.preventDefault();
+
+    const formData = {
+        id: parseInt(document.getElementById('editIdPelayanan').value),
+        nama_pelayanan: document.getElementById('editNamaPelayanan').value,
+        deskripsi: document.getElementById('editDeskripsiPelayanan').value,
+        harga: parseFloat(document.getElementById('editHargaPelayanan').value),
+        durasi: parseInt(document.getElementById('editDurasiPelayanan').value),
+        status: document.getElementById('editStatusPelayanan').value
+    };
+
+    try {
+        const response = await fetch('api/pelayanan.php', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData)
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            showPopup('Pelayanan berhasil diperbarui!');
+            document.getElementById('modalEditPelayanan').style.display = 'none';
+            loadPelayanan();
+        } else {
+            showPopup('Gagal memperbarui pelayanan: ' + data.message);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        showPopup('Gagal memperbarui pelayanan');
+    }
+}
+
+// Edit pelayanan
+function editPelayanan(id) {
+    const item = pelayanan.find(p => p.id === id);
+    if (!item) return;
+
+    document.getElementById('editIdPelayanan').value = item.id;
+    document.getElementById('editNamaPelayanan').value = item.nama_pelayanan;
+    document.getElementById('editDeskripsiPelayanan').value = item.deskripsi || '';
+    document.getElementById('editHargaPelayanan').value = item.harga;
+    document.getElementById('editDurasiPelayanan').value = item.durasi;
+    document.getElementById('editStatusPelayanan').value = item.status;
+
+    document.getElementById('modalEditPelayanan').style.display = 'flex';
+}
+
+// Delete pelayanan
+function deletePelayanan(id) {
+    if (!confirm('Apakah Anda yakin ingin menghapus pelayanan ini?')) {
+        return;
+    }
+
+    fetch('api/pelayanan.php', {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: id })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showPopup('Pelayanan berhasil dihapus!');
+            loadPelayanan();
+        } else {
+            showPopup('Gagal menghapus pelayanan: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showPopup('Gagal menghapus pelayanan');
+    });
+} 

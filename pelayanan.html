@@ -35,7 +35,7 @@
                 <div class="dashboard-main">
                     <div class="produk-header">
                         <h2>Kelola Pelayanan</h2>
-                        <button class="btn btn-primary" id="btnShowTambahPelayanan"><i class="fas fa-plus"></i> Tambah</button>
+                        <button class="btn btn-primary" id="btnShowTambahPelayanan"><i class="fas fa-plus"></i> Tambah Pelayanan</button>
                     </div>
                     <div class="pelayanan-grid" id="pelayananGrid">
                         <!-- Data pelayanan akan ditampilkan di sini -->
@@ -44,6 +44,86 @@
             </div>
         </div>
     </main>
+
+    <!-- Modal Tambah Pelayanan -->
+    <div id="modalTambahPelayanan" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Tambah Pelayanan Baru</h3>
+                <span class="close" id="closeModalTambahPelayanan">&times;</span>
+            </div>
+            <form id="formTambahPelayanan">
+                <div class="form-group">
+                    <label for="namaPelayanan">Nama Pelayanan:</label>
+                    <input type="text" id="namaPelayanan" name="namaPelayanan" required>
+                </div>
+                <div class="form-group">
+                    <label for="deskripsiPelayanan">Deskripsi:</label>
+                    <textarea id="deskripsiPelayanan" name="deskripsiPelayanan" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="hargaPelayanan">Harga (Rp):</label>
+                    <input type="number" id="hargaPelayanan" name="hargaPelayanan" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="durasiPelayanan">Durasi (menit):</label>
+                    <input type="number" id="durasiPelayanan" name="durasiPelayanan" min="15" value="30" required>
+                </div>
+                <div class="form-group">
+                    <label for="statusPelayanan">Status:</label>
+                    <select id="statusPelayanan" name="statusPelayanan">
+                        <option value="aktif">Aktif</option>
+                        <option value="nonaktif">Nonaktif</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="btnBatalTambahPelayanan">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Edit Pelayanan -->
+    <div id="modalEditPelayanan" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Edit Pelayanan</h3>
+                <span class="close" id="closeModalEditPelayanan">&times;</span>
+            </div>
+            <form id="formEditPelayanan">
+                <input type="hidden" id="editIdPelayanan" name="editIdPelayanan">
+                <div class="form-group">
+                    <label for="editNamaPelayanan">Nama Pelayanan:</label>
+                    <input type="text" id="editNamaPelayanan" name="editNamaPelayanan" required>
+                </div>
+                <div class="form-group">
+                    <label for="editDeskripsiPelayanan">Deskripsi:</label>
+                    <textarea id="editDeskripsiPelayanan" name="editDeskripsiPelayanan" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="editHargaPelayanan">Harga (Rp):</label>
+                    <input type="number" id="editHargaPelayanan" name="editHargaPelayanan" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="editDurasiPelayanan">Durasi (menit):</label>
+                    <input type="number" id="editDurasiPelayanan" name="editDurasiPelayanan" min="15" required>
+                </div>
+                <div class="form-group">
+                    <label for="editStatusPelayanan">Status:</label>
+                    <select id="editStatusPelayanan" name="editStatusPelayanan">
+                        <option value="aktif">Aktif</option>
+                        <option value="nonaktif">Nonaktif</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="btnBatalEditPelayanan">Batal</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <div id="popupNotif" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.4);z-index:9999;align-items:center;justify-content:center;">
         <div style="background:#fff;padding:2rem 2.5rem;border-radius:16px;box-shadow:0 4px 24px rgba(35,57,93,0.18);min-width:300px;max-width:90vw;text-align:center;">
             <div id="popupNotifMsg" style="margin-bottom:1.5rem;font-size:1.1rem;"></div>
