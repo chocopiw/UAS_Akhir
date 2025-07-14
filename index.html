@@ -244,6 +244,83 @@
                 </div>
             </div>
         </div>
+
+        <!-- Pelayanan Page (sidebar + konten pelayanan) -->
+        <div id="pelayanan" style="display:none">
+            <div class="dashboard-layout">
+                <aside class="dashboard-sidebar">
+                    <div class="sidebar-brand"><i class="fas fa-coffee"></i> Toko Kopi</div>
+                    <nav class="sidebar-menu">
+                        <a href="#dashboard" class="sidebar-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                        <a href="#kelola_produk" class="sidebar-link"><i class="fas fa-box"></i> Kelola Produk</a>
+                        <a href="#pelayanan" class="sidebar-link active"><i class="fas fa-bell"></i> Pelayanan</a>
+                        <a href="#pesanan" class="sidebar-link"><i class="fas fa-shopping-cart"></i> Pesanan</a>
+                        <a href="#kupon" class="sidebar-link"><i class="fas fa-ticket-alt"></i> Kupon</a>
+                        <a href="#penjualan" class="sidebar-link"><i class="fas fa-chart-line"></i> Penjualan</a>
+                        <a href="#pelanggan" class="sidebar-link"><i class="fas fa-users"></i> Pelanggan</a>
+                        <a href="#review" class="sidebar-link"><i class="fas fa-star"></i> Review</a>
+                        <a href="#kontak" class="sidebar-link"><i class="fas fa-envelope"></i> Kontak</a>
+                        <a href="#logout" class="sidebar-link" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </nav>
+                </aside>
+                <div class="dashboard-main">
+                    <div class="dashboard-header">
+                        <div class="dashboard-title">Data Pelayanan</div>
+                    </div>
+                    <div class="dashboard-content-area">
+                        <div class="pelayanan-grid">
+                            <div class="pelayanan-card">
+                                <div class="pelayanan-header">
+                                    <div class="pelayanan-nama">Espresso</div>
+                                    <div class="pelayanan-harga">Rp 15.000</div>
+                                    <div class="pelayanan-durasi"><i class="fas fa-clock"></i> 10 menit</div>
+                                    <span class="pelayanan-status aktif">Aktif</span>
+                                </div>
+                                <div class="pelayanan-body">
+                                    <div class="pelayanan-deskripsi">Pembuatan kopi espresso dengan mesin profesional, rasa kuat dan nikmat.</div>
+                                    <div class="pelayanan-actions">
+                                        <button class="pelayanan-btn edit"><i class="fas fa-edit"></i> Edit</button>
+                                        <button class="pelayanan-btn delete"><i class="fas fa-trash"></i> Hapus</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pelayanan-card">
+                                <div class="pelayanan-header">
+                                    <div class="pelayanan-nama">Latte Art</div>
+                                    <div class="pelayanan-harga">Rp 20.000</div>
+                                    <div class="pelayanan-durasi"><i class="fas fa-clock"></i> 15 menit</div>
+                                    <span class="pelayanan-status aktif">Aktif</span>
+                                </div>
+                                <div class="pelayanan-body">
+                                    <div class="pelayanan-deskripsi">Pelayanan pembuatan latte art untuk minuman kopi Anda, hasil cantik dan instagramable.</div>
+                                    <div class="pelayanan-actions">
+                                        <button class="pelayanan-btn edit"><i class="fas fa-edit"></i> Edit</button>
+                                        <button class="pelayanan-btn delete"><i class="fas fa-trash"></i> Hapus</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pelayanan-card">
+                                <div class="pelayanan-header">
+                                    <div class="pelayanan-nama">Manual Brew</div>
+                                    <div class="pelayanan-harga">Rp 18.000</div>
+                                    <div class="pelayanan-durasi"><i class="fas fa-clock"></i> 12 menit</div>
+                                    <span class="pelayanan-status nonaktif">Nonaktif</span>
+                                </div>
+                                <div class="pelayanan-body">
+                                    <div class="pelayanan-deskripsi">Penyeduhan kopi manual (V60, French Press, dsb) sesuai permintaan pelanggan.</div>
+                                    <div class="pelayanan-actions">
+                                        <button class="pelayanan-btn edit"><i class="fas fa-edit"></i> Edit</button>
+                                        <button class="pelayanan-btn delete"><i class="fas fa-trash"></i> Hapus</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END Pelayanan Page -->
+
     </main>
 
     <div id="popupNotif" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.4);z-index:9999;align-items:center;justify-content:center;">
@@ -323,6 +400,51 @@
     } else {
         setDarkMode(false);
     }
+    // === SIDEBAR NAVIGATION ===
+    function showDashboardSection(sectionId) {
+        // Semua section utama
+        const sections = ['dashboard', 'kelola_produk', 'pelayanan', 'pesanan', 'kupon', 'penjualan', 'pelanggan', 'review', 'kontak'];
+        sections.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.style.display = (id === sectionId) ? 'block' : 'none';
+        });
+        // Highlight menu aktif
+        document.querySelectorAll('.sidebar-link').forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === '#' + sectionId) {
+                link.classList.add('active');
+            }
+        });
+    }
+    // Event listener untuk sidebar
+    const sidebarLinks = document.querySelectorAll('.dashboard-sidebar .sidebar-link');
+    sidebarLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            if (href && href.startsWith('#')) {
+                e.preventDefault();
+                const sectionId = href.substring(1);
+                showDashboardSection(sectionId);
+                window.location.hash = sectionId;
+            }
+        });
+    });
+    // Tampilkan section sesuai hash saat load
+    window.addEventListener('DOMContentLoaded', function() {
+        const hash = window.location.hash.replace('#', '');
+        if (hash && document.getElementById(hash)) {
+            showDashboardSection(hash);
+        } else {
+            showDashboardSection('dashboard');
+        }
+    });
+    // Tampilkan section sesuai hash saat hash berubah
+    window.addEventListener('hashchange', function() {
+        const hash = window.location.hash.replace('#', '');
+        if (hash && document.getElementById(hash)) {
+            showDashboardSection(hash);
+        }
+    });
     </script>
 </body>
 </html> 
