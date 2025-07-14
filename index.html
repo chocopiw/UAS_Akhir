@@ -11,6 +11,9 @@
     <nav class="navbar">
         <div class="nav-brand">MyApp</div>
         <div class="nav-menu" id="navMenu">
+            <button id="toggleDarkMode" style="margin-right:1.5rem;font-size:1.2rem;cursor:pointer;background:none;border:none;outline:none;" title="Ganti Mode">
+                <i id="darkModeIcon" class="fas fa-moon"></i>
+            </button>
             <a href="#login" class="nav-link" id="loginLink">Login</a>
         </div>
     </nav>
@@ -295,6 +298,31 @@
             });
         }
     });
+    // === DARK MODE TOGGLE ===
+    const toggleBtn = document.getElementById('toggleDarkMode');
+    const icon = document.getElementById('darkModeIcon');
+    function setDarkMode(on) {
+        if(on) {
+            document.body.classList.add('dark-mode');
+            icon.classList.remove('fa-moon');
+            icon.classList.add('fa-sun');
+            localStorage.setItem('darkMode', 'on');
+        } else {
+            document.body.classList.remove('dark-mode');
+            icon.classList.remove('fa-sun');
+            icon.classList.add('fa-moon');
+            localStorage.setItem('darkMode', 'off');
+        }
+    }
+    toggleBtn.addEventListener('click', function() {
+        setDarkMode(!document.body.classList.contains('dark-mode'));
+    });
+    // Set mode sesuai preferensi user
+    if(localStorage.getItem('darkMode') === 'on') {
+        setDarkMode(true);
+    } else {
+        setDarkMode(false);
+    }
     </script>
 </body>
 </html> 

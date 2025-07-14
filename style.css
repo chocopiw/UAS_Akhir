@@ -1342,3 +1342,85 @@ body {
         flex-direction: column;
     }
 }
+
+/* === VARIABEL WARNA UTAMA === */
+:root {
+  --color-bg: #eaf1fb;
+  --color-bg-card: #fff;
+  --color-sidebar: #22304a;
+  --color-sidebar-link: #fff;
+  --color-sidebar-link-active: #2e4a7d;
+  --color-text: #23395d;
+  --color-text-secondary: #888;
+  --color-header: #3b5998;
+  --color-shadow: rgba(35,57,93,0.07);
+  --color-border: #e1e5e9;
+}
+.dark-mode {
+  --color-bg: #181c25;
+  --color-bg-card: #232b3e;
+  --color-sidebar: #151a23;
+  --color-sidebar-link: #bfc9e0;
+  --color-sidebar-link-active: #22304a;
+  --color-text: #f3f6fa;
+  --color-text-secondary: #bfc9e0;
+  --color-header: #232b3e;
+  --color-shadow: rgba(0,0,0,0.25);
+  --color-border: #232b3e;
+}
+
+body, .main-content, .dashboard-layout {
+  background: var(--color-bg) !important;
+  color: var(--color-text);
+}
+.dashboard-sidebar {
+  background: var(--color-sidebar);
+  color: var(--color-sidebar-link);
+}
+.sidebar-link {
+  color: var(--color-sidebar-link);
+}
+.sidebar-link.active, .sidebar-link:hover {
+  background: var(--color-sidebar-link-active);
+}
+.dashboard-main {
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+.dashboard-content-area {
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+.dashboard-stat-card, .dashboard-graph-card {
+  background: var(--color-bg-card);
+  color: var(--color-text);
+  box-shadow: 0 2px 12px var(--color-shadow);
+  border: 1.5px solid var(--color-border);
+}
+.dashboard-title, .graph-title, .stat-label, .stat-value, .stat-desc {
+  color: var(--color-text);
+}
+.dashboard-header {
+  background: var(--color-header);
+  color: var(--color-text);
+}
+
+/* Ubah warna input di dark mode */
+.dark-mode input, .dark-mode textarea, .dark-mode select {
+  background: #232b3e;
+  color: #f3f6fa;
+  border: 1.5px solid #2e4a7d;
+}
+
+/* Ubah warna chart canvas di dark mode */
+.dark-mode canvas {
+  background: #232b3e;
+}
+
+/* Ubah warna scrollbar di dark mode */
+.dark-mode ::-webkit-scrollbar {
+  background: #232b3e;
+}
+.dark-mode ::-webkit-scrollbar-thumb {
+  background: #151a23;
+}
