@@ -321,6 +321,143 @@
         </div>
         <!-- END Pelayanan Page -->
 
+        <!-- Pesanan Page (sidebar + konten pesanan) -->
+        <div id="pesanan" style="display:none">
+            <div class="dashboard-layout">
+                <aside class="dashboard-sidebar">
+                    <div class="sidebar-brand"><i class="fas fa-coffee"></i> Toko Kopi</div>
+                    <nav class="sidebar-menu">
+                        <a href="#dashboard" class="sidebar-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                        <a href="#kelola_produk" class="sidebar-link"><i class="fas fa-box"></i> Kelola Produk</a>
+                        <a href="#pelayanan" class="sidebar-link"><i class="fas fa-bell"></i> Pelayanan</a>
+                        <a href="#pesanan" class="sidebar-link active"><i class="fas fa-shopping-cart"></i> Pesanan</a>
+                        <a href="#kupon" class="sidebar-link"><i class="fas fa-ticket-alt"></i> Kupon</a>
+                        <a href="#penjualan" class="sidebar-link"><i class="fas fa-chart-line"></i> Penjualan</a>
+                        <a href="#pelanggan" class="sidebar-link"><i class="fas fa-users"></i> Pelanggan</a>
+                        <a href="#review" class="sidebar-link"><i class="fas fa-star"></i> Review</a>
+                        <a href="#kontak" class="sidebar-link"><i class="fas fa-envelope"></i> Kontak</a>
+                        <a href="#logout" class="sidebar-link" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </nav>
+                </aside>
+                <div class="dashboard-main">
+                    <div class="dashboard-content-area">
+                        <h2 class="pesanan-title">Data Pesanan</h2>
+                        <button class="btn-tambah-pesanan"><i class="fas fa-plus"></i> Tambah Pesanan</button>
+                        <table class="dashboard-table pesanan-table">
+                            <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Nama</th>
+                                    <th>Produk</th>
+                                    <th>Tanggal</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1.</td>
+                                    <td>Andi</td>
+                                    <td>Espresso</td>
+                                    <td>2024-07-14</td>
+                                    <td><span class="status-badge selesai">Selesai</span></td>
+                                    <td>
+                                        <button class="btn-edit">EDIT</button>
+                                        <button class="btn-hapus">HAPUS</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>2.</td>
+                                    <td>Budi</td>
+                                    <td>Latte Art</td>
+                                    <td>2024-07-13</td>
+                                    <td><span class="status-badge proses">Proses</span></td>
+                                    <td>
+                                        <button class="btn-edit">EDIT</button>
+                                        <button class="btn-hapus">HAPUS</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>3.</td>
+                                    <td>Citra</td>
+                                    <td>Manual Brew</td>
+                                    <td>2024-07-12</td>
+                                    <td><span class="status-badge batal">Batal</span></td>
+                                    <td>
+                                        <button class="btn-edit">EDIT</button>
+                                        <button class="btn-hapus">HAPUS</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END Pesanan Page -->
+
+        <!-- Kupon Page (sidebar + konten kupon) -->
+        <div id="kupon" style="display:none">
+            <div class="dashboard-layout">
+                <aside class="dashboard-sidebar">
+                    <div class="sidebar-brand"><i class="fas fa-coffee"></i> Toko Kopi</div>
+                    <nav class="sidebar-menu">
+                        <a href="#dashboard" class="sidebar-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                        <a href="#kelola_produk" class="sidebar-link"><i class="fas fa-box"></i> Kelola Produk</a>
+                        <a href="#pelayanan" class="sidebar-link"><i class="fas fa-bell"></i> Pelayanan</a>
+                        <a href="#pesanan" class="sidebar-link"><i class="fas fa-shopping-cart"></i> Pesanan</a>
+                        <a href="#kupon" class="sidebar-link active"><i class="fas fa-ticket-alt"></i> Kupon</a>
+                        <a href="#penjualan" class="sidebar-link"><i class="fas fa-chart-line"></i> Penjualan</a>
+                        <a href="#pelanggan" class="sidebar-link"><i class="fas fa-users"></i> Pelanggan</a>
+                        <a href="#review" class="sidebar-link"><i class="fas fa-star"></i> Review</a>
+                        <a href="#kontak" class="sidebar-link"><i class="fas fa-envelope"></i> Kontak</a>
+                        <a href="#logout" class="sidebar-link" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </nav>
+                </aside>
+                <div class="dashboard-main">
+                    <div class="dashboard-header">
+                        <div class="dashboard-title">Daftar Kupon</div>
+                    </div>
+                    <div class="dashboard-content-area">
+                        <table class="dashboard-table">
+                            <thead>
+                                <tr>
+                                    <th>Kode</th>
+                                    <th>Deskripsi</th>
+                                    <th>Diskon</th>
+                                    <th>Status</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>KOPI10</td>
+                                    <td>Diskon 10% untuk semua menu kopi</td>
+                                    <td>10%</td>
+                                    <td><span class="status-badge aktif">Aktif</span></td>
+                                    <td>
+                                        <button class="dashboard-btn edit"><i class="fas fa-edit"></i></button>
+                                        <button class="dashboard-btn hapus"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>LATTE20</td>
+                                    <td>Diskon 20% khusus menu Latte</td>
+                                    <td>20%</td>
+                                    <td><span class="status-badge nonaktif">Nonaktif</span></td>
+                                    <td>
+                                        <button class="dashboard-btn edit"><i class="fas fa-edit"></i></button>
+                                        <button class="dashboard-btn hapus"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END Kupon Page -->
+
     </main>
 
     <div id="popupNotif" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.4);z-index:9999;align-items:center;justify-content:center;">
@@ -328,6 +465,37 @@
             <div id="popupNotifMsg" style="margin-bottom:1.5rem;font-size:1.1rem;"></div>
             <button onclick="document.getElementById('popupNotif').style.display='none'" style="padding:0.5rem 1.5rem;border:none;background:#7a4956;color:#fff;border-radius:8px;font-size:1rem;cursor:pointer;">OK</button>
         </div>
+    </div>
+
+    <!-- Modal Tambah Pesanan -->
+    <div id="modalTambahPesanan" class="modal-produk" style="display:none;z-index:99999;">
+      <div class="modal-content" style="max-width:400px;">
+        <span class="close-modal" id="closeModalTambahPesanan">&times;</span>
+        <h3>Tambah Pesanan</h3>
+        <form id="formTambahPesanan">
+          <div class="form-group">
+            <label>Nama</label>
+            <input type="text" id="pesananNama" required>
+          </div>
+          <div class="form-group">
+            <label>Produk</label>
+            <input type="text" id="pesananProduk" required>
+          </div>
+          <div class="form-group">
+            <label>Tanggal</label>
+            <input type="date" id="pesananTanggal" required>
+          </div>
+          <div class="form-group">
+            <label>Status</label>
+            <select id="pesananStatus" required>
+              <option value="Selesai">Selesai</option>
+              <option value="Proses">Proses</option>
+              <option value="Batal">Batal</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-success" style="width:100%;margin-top:1rem;">Simpan</button>
+        </form>
+      </div>
     </div>
 
     <script src="script.js"></script>
@@ -444,6 +612,39 @@
         if (hash && document.getElementById(hash)) {
             showDashboardSection(hash);
         }
+    });
+
+    // === MODAL TAMBAH PESANAN ===
+    const btnTambahPesanan = document.querySelector('.btn-tambah-pesanan');
+    const modalTambahPesanan = document.getElementById('modalTambahPesanan');
+    const closeModalTambahPesanan = document.getElementById('closeModalTambahPesanan');
+    btnTambahPesanan.addEventListener('click', function() {
+      modalTambahPesanan.style.display = 'flex';
+    });
+    closeModalTambahPesanan.addEventListener('click', function() {
+      modalTambahPesanan.style.display = 'none';
+    });
+    window.addEventListener('click', function(e) {
+      if (e.target === modalTambahPesanan) modalTambahPesanan.style.display = 'none';
+    });
+
+    // === TAMBAH DATA KE TABEL ===
+    document.getElementById('formTambahPesanan').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const nama = document.getElementById('pesananNama').value;
+      const produk = document.getElementById('pesananProduk').value;
+      const tanggal = document.getElementById('pesananTanggal').value;
+      const status = document.getElementById('pesananStatus').value;
+      const tbody = document.querySelector('.pesanan-table tbody');
+      const no = tbody.rows.length + 1;
+      let badgeClass = 'selesai';
+      if(status === 'Proses') badgeClass = 'proses';
+      if(status === 'Batal') badgeClass = 'batal';
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${no}.</td><td>${nama}</td><td>${produk}</td><td>${tanggal}</td><td><span class='status-badge ${badgeClass}'>${status}</span></td><td><button class='btn-edit'>EDIT</button> <button class='btn-hapus'>HAPUS</button></td>`;
+      tbody.appendChild(tr);
+      modalTambahPesanan.style.display = 'none';
+      this.reset();
     });
     </script>
 </body>
