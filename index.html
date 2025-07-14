@@ -20,27 +20,28 @@
 
     <main class="container">
         <!-- Login Page -->
-        <div id="loginPage" class="page">
-            <div class="form-container">
-                <h2>Login Admin</h2>
-                <form id="loginForm" class="form">
-                    <div class="form-group">
-                        <div class="input-wrapper">
-                            <i class="fas fa-user"></i>
-                            <input type="text" id="loginUsername" placeholder="Username" required>
+        <div id="loginPage" class="login-coffee-page page">
+            <div class="login-coffee-container">
+                <div class="login-coffee-form">
+                    <h2>LOGIN</h2>
+                    <div class="login-coffee-subtitle">Penyeduh Kopi Nusantara</div>
+                    <form id="loginForm" class="form">
+                        <div class="form-group">
+                            <label for="loginEmail">Email</label>
+                            <input type="email" id="loginEmail" placeholder="your@email.com" required>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="input-wrapper">
-                            <i class="fas fa-lock"></i>
+                        <div class="form-group">
+                            <label for="loginPassword">Password</label>
                             <input type="password" id="loginPassword" placeholder="Password" required>
                         </div>
-                    </div>
-                    <button type="submit" class="btn btn-primary">LOGIN</button>
-                </form>
-                <p class="form-footer">
-                    Belum punya akun? <a href="#" onclick="showRegister()">Register</a>
-                </p>
+                        <button type="submit" class="btn btn-primary login-coffee-btn">Login</button>
+                    </form>
+                    <a href="#" class="login-coffee-forgot">Lupa password?</a>
+                </div>
+                <div class="login-coffee-image">
+                    <img src="https://img.icons8.com/color/180/coffee-to-go.png" alt="Coffee Illustration" />
+                    <div class="login-coffee-title">Kopi Nusantara</div>
+                </div>
             </div>
         </div>
 
@@ -419,39 +420,41 @@
                         <div class="dashboard-title">Daftar Kupon</div>
                     </div>
                     <div class="dashboard-content-area">
-                        <table class="dashboard-table">
-                            <thead>
-                                <tr>
-                                    <th>Kode</th>
-                                    <th>Deskripsi</th>
-                                    <th>Diskon</th>
-                                    <th>Status</th>
-                                    <th>Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>KOPI10</td>
-                                    <td>Diskon 10% untuk semua menu kopi</td>
-                                    <td>10%</td>
-                                    <td><span class="status-badge aktif">Aktif</span></td>
-                                    <td>
-                                        <button class="dashboard-btn edit"><i class="fas fa-edit"></i></button>
-                                        <button class="dashboard-btn hapus"><i class="fas fa-trash"></i></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>LATTE20</td>
-                                    <td>Diskon 20% khusus menu Latte</td>
-                                    <td>20%</td>
-                                    <td><span class="status-badge nonaktif">Nonaktif</span></td>
-                                    <td>
-                                        <button class="dashboard-btn edit"><i class="fas fa-edit"></i></button>
-                                        <button class="dashboard-btn hapus"><i class="fas fa-trash"></i></button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class="kupon-grid">
+                            <div class="kupon-card espresso">
+                                <div class="kupon-info">
+                                    <div class="kupon-nama">Kupon Espresso</div>
+                                    <div class="kupon-diskon">Diskon 30%</div>
+                                    <div class="kupon-desc">Kupon berlaku hingga 1-15 November. Dapatkan diskon untuk menu Espresso favorit Anda.</div>
+                                </div>
+                                <div class="kupon-img-barcode">
+                                    <img src="https://img.icons8.com/color/96/coffee.png" alt="espresso" class="kupon-img">
+                                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=80x30&data=ESPRESSO30" alt="barcode" class="kupon-barcode">
+                                </div>
+                            </div>
+                            <div class="kupon-card cappuccino">
+                                <div class="kupon-info">
+                                    <div class="kupon-nama">Kupon Cappuccino</div>
+                                    <div class="kupon-diskon">Diskon 25%</div>
+                                    <div class="kupon-desc">Kupon berlaku hingga 1-15 November. Nikmati Cappuccino dengan harga spesial.</div>
+                                </div>
+                                <div class="kupon-img-barcode">
+                                    <img src="https://img.icons8.com/color/96/cappuccino.png" alt="cappuccino" class="kupon-img">
+                                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=80x30&data=CAPPUCCINO25" alt="barcode" class="kupon-barcode">
+                                </div>
+                            </div>
+                            <div class="kupon-card americano">
+                                <div class="kupon-info">
+                                    <div class="kupon-nama">Kupon Americano</div>
+                                    <div class="kupon-diskon">Diskon 20%</div>
+                                    <div class="kupon-desc">Kupon berlaku hingga 1-15 November. Berlaku untuk semua varian Americano.</div>
+                                </div>
+                                <div class="kupon-img-barcode">
+                                    <img src="https://img.icons8.com/color/96/americano.png" alt="americano" class="kupon-img">
+                                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=80x30&data=AMERICANO20" alt="barcode" class="kupon-barcode">
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

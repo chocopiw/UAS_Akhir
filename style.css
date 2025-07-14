@@ -1511,3 +1511,208 @@ body, .main-content, .dashboard-layout {
     padding: 7px 12px;
   }
 }
+
+/* === STYLE KUPON TIKET === */
+.kupon-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+.kupon-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff7f0;
+  border-radius: 18px;
+  box-shadow: 0 2px 12px rgba(35,57,93,0.07);
+  border: 2px dashed #e57373;
+  padding: 1.2rem 2.2rem 1.2rem 1.5rem;
+  min-height: 120px;
+  position: relative;
+  overflow: hidden;
+}
+.kupon-card.ramyeon { border-color: #e57373; }
+.kupon-card.bibimbap { border-color: #ffb74d; background: #fffbe7; }
+.kupon-card.kimchi { border-color: #81c784; background: #f6fff0; }
+.kupon-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.kupon-nama {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #b71c1c;
+  margin-bottom: 0.2rem;
+}
+.kupon-card.bibimbap .kupon-nama { color: #e65100; }
+.kupon-card.kimchi .kupon-nama { color: #388e3c; }
+.kupon-diskon {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #fff;
+  background: #e57373;
+  display: inline-block;
+  padding: 2px 16px;
+  border-radius: 12px;
+  margin-bottom: 0.3rem;
+}
+.kupon-card.bibimbap .kupon-diskon { background: #ffb74d; color: #fff; }
+.kupon-card.kimchi .kupon-diskon { background: #81c784; color: #fff; }
+.kupon-desc {
+  font-size: 0.98rem;
+  color: #555;
+  margin-top: 0.2rem;
+}
+.kupon-img-barcode {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 110px;
+}
+.kupon-img {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(35,57,93,0.10);
+}
+.kupon-barcode {
+  width: 80px;
+  height: 30px;
+  object-fit: contain;
+  background: #fff;
+  border-radius: 6px;
+  margin-top: 0.2rem;
+}
+@media (max-width: 700px) {
+  .kupon-card {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1rem 0.7rem;
+    min-height: 0;
+  }
+  .kupon-img-barcode {
+    flex-direction: row;
+    gap: 1.2rem;
+    margin-top: 0.7rem;
+  }
+}
+
+/* === LOGIN COFFEE STYLE === */
+.login-coffee-page {
+  background: #ffb74d;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  padding: 0;
+}
+.login-coffee-container {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 32px rgba(35,57,93,0.13);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 2.5rem 2.5rem 2.5rem 2.5rem;
+  gap: 2.5rem;
+  max-width: 700px;
+  width: 100%;
+}
+.login-coffee-form {
+  flex: 1.2;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+.login-coffee-form h2 {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #7a4956;
+  margin-bottom: 0.2rem;
+}
+.login-coffee-subtitle {
+  color: #b77b3a;
+  font-size: 1.1rem;
+  margin-bottom: 1.2rem;
+}
+.login-coffee-form label {
+  color: #7a4956;
+  font-weight: 500;
+  margin-bottom: 0.2rem;
+}
+.login-coffee-form input {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  border: 1.5px solid #e1e5e9;
+  border-radius: 7px;
+  font-size: 1rem;
+  margin-bottom: 0.7rem;
+  background: #fff8f1;
+  color: #7a4956;
+}
+.login-coffee-btn {
+  background: #7a4956;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.8rem 1.5rem;
+  font-size: 1.08rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 0.7rem;
+  box-shadow: 0 2px 8px rgba(67,160,71,0.08);
+  transition: background 0.2s;
+  width: 100%;
+}
+.login-coffee-btn:hover {
+  background: #5d2e3a;
+}
+.login-coffee-forgot {
+  color: #b77b3a;
+  text-align: left;
+  margin-top: 0.7rem;
+  font-size: 0.98rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.login-coffee-image {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+}
+.login-coffee-image img {
+  width: 180px;
+  height: 180px;
+  object-fit: contain;
+  margin-bottom: 0.5rem;
+}
+.login-coffee-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #7a4956;
+  text-align: center;
+}
+@media (max-width: 700px) {
+  .login-coffee-container {
+    flex-direction: column;
+    padding: 1.2rem 0.7rem 1rem 0.7rem;
+    gap: 1.2rem;
+    max-width: 98vw;
+  }
+  .login-coffee-image img {
+    width: 120px;
+    height: 120px;
+  }
+  .login-coffee-title {
+    font-size: 1.1rem;
+  }
+}
